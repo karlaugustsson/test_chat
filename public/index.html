@@ -1,5 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+	#chatApp{
+		display: none;
+		position: relative;
+		height:auto;
+		width:100%;
+		overflow: auto;
+	}
+	#chatbox{
+		float: left;
+		border: 1px solid black;
+		height: 500px;
+		width: 600px;
+		overflow: scroll;
+	}
+	#chatbox > span.color{
+		color:blue;
+	}
+
+	#chatApp input{
+	display: block;
+	}
+	#chatApp > #messageField{
+		width:60%;
+	}
+		#usersOnline{
+		float: right;
+		border: 1px solid black;
+		height: 500px;
+		width: 300px;
+		overflow: scroll;
+		background-color: gray;
+	}
+	#usersOnline span{
+		color:lightgreen;
+		font-size: 14px;
+	}
+
+</style>
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
@@ -8,12 +47,29 @@
 	<script src="/scripts/chat.js"></script>
 </head>
 <body>
-	<div class="container">
+	<div id="loginForm"class="container">
 		<h2>chat application</h2>
-		<form action="">
-			<input type="text" placeholder="Enter a username">
+		<form id="nameForm" action="">
+			<input id="nameField" type="text" placeholder="Enter a username">
+			<input type="submit" value="jag vill ha ett namn , nu vill jag ha det!">
 		</form>
 		<div class="error"></div>
+
 	</div>
+	<div id="chatApp">
+		<div id="chatbox">
+
+		</div>
+
+		<div id="usersOnline">
+			<span>test</span>
+		</div>
+		<form id="messageForm" action="">
+			<input id="messageField" type="text" placeholder="text goes here">
+			<input type="submit" value="send message">		
+		</form>
+
+	</div>
+
 </body>
 </html>

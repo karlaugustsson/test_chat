@@ -15,6 +15,8 @@ var io  = require("socket.io").listen(server);
 var users = [];
 
 var port = 3000;
+
+
 app.use('/scripts', express.static(__dirname + '/javascripts/'));
 //code
 
@@ -24,11 +26,46 @@ app.get("/",function(req,res){
 
 server.listen(3000);
 
-io.sockets.on("connection" , function(socket){
-	console.log(socket);
-});
+io.sockets.on("connect" , function(socket){
 
-console.log(__dirname + '/javascripts/');
+	console.log("new user joined the chat")
+	socket.on("new_message",function(data){
+		data = [{userName:socket.userName , message:data.message}];
+		io.sockets.emit("update_them_chats",data);
+	});
+	socket.on("find_user",function(data,callback){
+		if(typeof socket.userName === "undefined"){
+		
+		var user  = users.filter(function(obj){
+			
+			return obj.userName === data.userName;
+		});
+		
+		if(user.length == 0){
+
+			users.push({userName:data.userName});
+			socket.userName = data.userName;
+
+			socket.emit("start_chat",users);
+			console.log(users);
+			io.sockets.emit("update_user_list" , users);
+
+		}else{
+				callback("user already exists");				
+		}
+
+		}
+		
+
+		
+});
+	
+	socket.on("disconnect",function(){
+		users.splice(users.indexOf(socket.userName));
+		io.sockets.emit("update_user_list",users);
+
+	});
+});
 
 
 
