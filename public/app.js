@@ -34,6 +34,7 @@ io.sockets.on("connect" , function(socket){
 		io.sockets.emit("update_them_chats",data);
 	});
 	socket.on("find_user",function(data,callback){
+
 		if(typeof socket.userName === "undefined"){
 		
 		var user  = users.filter(function(obj){
@@ -47,11 +48,11 @@ io.sockets.on("connect" , function(socket){
 			socket.userName = data.userName;
 
 			socket.emit("start_chat",users);
-			console.log(users);
+			
 			io.sockets.emit("update_user_list" , users);
 
 		}else{
-				callback("user already exists");				
+			callback("user already exists");				
 		}
 
 		}
@@ -62,6 +63,7 @@ io.sockets.on("connect" , function(socket){
 	
 	socket.on("disconnect",function(){
 		users.splice(users.indexOf(socket.userName));
+		console.log(socket.userName + " left the chat");
 		io.sockets.emit("update_user_list",users);
 
 	});
