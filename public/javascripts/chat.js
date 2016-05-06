@@ -32,8 +32,9 @@ message_form.on("submit",function(e){
 	if(message_field.val() == ""){
 		return;
 	}
-	console.log("mamam");
-	socket.emit("new_message",{"message":message_field.val()})
+	socket.emit("new_message",{"message":message_field.val()},function(data){
+		console.log(data);
+	})
 });
 socket.on("start_chat",function(data){
 	loginForm.hide();
