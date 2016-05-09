@@ -16,7 +16,6 @@ var users = [];
 
 var port = 3000;
 
-var upload = multer({ storage : storage},{limits : {fieldNameSize : 10}}).single('userPhoto');
 
 app.use('/scripts', express.static(__dirname + '/javascripts/'));
 //code

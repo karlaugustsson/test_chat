@@ -33,7 +33,7 @@ $( document ).ready(function() {
     error_box.hide();
 
 image_file.on("change",function(e){
-	
+	console.log("hahaha");
 	if( validate_image_data(e.target.files[0]) == true ){
 	
 		message_data.file = {data:e.target.files[0],type:e.target.files[0].type }
@@ -100,16 +100,17 @@ image_file.on("change",function(e){
     		});				
 
 
+
     });
     socket.on("update_chat_box",function(data){
-    		
- 			if(data.file != null){
+    		console.log(data.file);
+ 			if(data.file != null || data.file != ""){
  				
  				bytes = data.file.data;
  				message_box.append("<p>" + data.userName +": sent a image </p>")
  				message_box.append('<img src="data:'+ data.file.type +';base64,' + escape(bytes) + '" height="auto" width="100px">');
  				message_box.scrollTop(999999999);
- 				data.file = null;
+ 				data.file = "";
  				console.log(data.file);
  			}
  			if(data.message !== false){
