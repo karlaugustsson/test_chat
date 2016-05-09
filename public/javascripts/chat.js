@@ -104,14 +104,19 @@ image_file.on("change",function(e){
     socket.on("update_chat_box",function(data){
     		
  			if(data.file != null){
- 				console.log(data.file);
+ 				
  				bytes = data.file.data;
- 				message_box.append("<p>"+ data.userName +": sent a image </p>")
+ 				message_box.append("<p>" + data.userName +": sent a image </p>")
  				message_box.append('<img src="data:'+ data.file.type +';base64,' + escape(bytes) + '" height="auto" width="100px">');
+ 				message_box.scrollTop(999999999);
+ 				data.file = null;
+ 				console.log(data.file);
  			}
  			if(data.message !== false){
 
  				message_box.append( "<p>" + data.userName + ":" + data.message + "</p>");
+ 				message_box.scrollTop(999999999);
+
  			}
     		
     });

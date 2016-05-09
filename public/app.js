@@ -16,6 +16,7 @@ var users = [];
 
 var port = 3000;
 
+var upload = multer({ storage : storage},{limits : {fieldNameSize : 10}}).single('userPhoto');
 
 app.use('/scripts', express.static(__dirname + '/javascripts/'));
 //code
@@ -78,11 +79,6 @@ function create_new_user(socket ,userName){
 	socket.userName = userName;
 	users.push({userName:userName});
 	io.sockets.emit("update_users_online_list",users);
-}
-
-function validate_image(image){
-
-
 }
 
 
