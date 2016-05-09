@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <style>
-	.footer{
+	.footer,.header{
     background-color: #474545;
     color: white;
     margin-top: 50px;
+	}
+	.header{
+		margin-top: 0px;
+		margin-bottom: 50px;
 	}
 	.fotter ul {
 		list-style: none;
@@ -31,6 +35,12 @@
 	#chatForm > .form-group{
 		margin-top: 20px;
 	}
+	#chatForm button.image.upload::after{
+		font-family: 'Glyphicons Halflings';
+		content:"\e060";
+
+	}
+
 </style>
 <head>
 	<meta charset="UTF-8">
@@ -43,6 +53,15 @@
 </head>
 <body>
 	<div class="container">
+	
+			<div class="col-xs-12 header">
+				<div class="col-xs-10">
+					<h1> Chattie</h1>
+				</div>
+
+		</div>
+	</div>
+	<div class="container">
 		<div class="row">
 			<div class="col-xs-12">
 				<div id="errorBox"class="alert alert-danger">
@@ -52,8 +71,8 @@
 		</div>
 		<div class="row">
 		<div class="col-xs-12">
-			<h1> Chattie</h1>
-			<form class="form-inline" id="nameForm">
+			
+			<form class="form-inline" id="nameForm" mulr>
 			  <div class="form-group">
 			    <label for="name">Name:</label>
 					<input id="nameField" name="name"type="text" class="form-control" placeholder="Enter a username">	
@@ -72,25 +91,33 @@
 							<div id="chatBox"></div>
 						</div>
 						<div class="row">
-						<form class="form-inline" id="chatForm">
+						<form class="form-inline" id="chatForm" enctype="multipart/form-data">
 						  <div class="form-group">
 		
 								<input id="chatField" name="name"type="text" class="form-control" placeholder="chat please">	
-						<input type="submit" class="btn btn-primary" value="huhuh">
+						<input type="submit" class="btn btn-primary" value="send">
+
+						<input id="upload-image" type="file" style="display:none;" name="file_upload" accept="image/*" >
+						<button class="btn btn-primary image upload" onclick="document.getElementById('upload-image').click();return false;"></button>
 						  </div>
 
 						</form>	
+
 						</div>
 							
 				
 					</div>
 
-					<div class="col-xs-3 col-xs-offset-5">
-						
-						<div id="usersOnlineBox">
-							<span class="user">Kalle</span>
-
+					<div id="online_container" class="col-xs-3 col-xs-offset-5">
+						<div class="row">
+						<p>online:</p>
 						</div>
+						<div class="row">
+							<div id="usersOnlineBox">
+								<span class="user">Kalle not really</span>
+							</div>
+						</div>
+
 				
 				</div>
 

@@ -60,15 +60,29 @@ io.sockets.on("connect" , function(socket){
 
 	socket.on("send_message",function(data){
 
+		if(data.file){
+			var image = new Buffer(data.file.data , "binary").toString("base64");
+			data.file.data = image ;
+		}
 		data.userName = socket.userName;
+		
+
+	
+		
 		io.sockets.emit("update_chat_box",data);
 	});
+
 });
 
 function create_new_user(socket ,userName){
 	socket.userName = userName;
 	users.push({userName:userName});
 	io.sockets.emit("update_users_online_list",users);
+}
+
+function validate_image(image){
+
+
 }
 
 
