@@ -25,6 +25,7 @@ $( document ).ready(function() {
     var message_box = $("#chatBox");
     var image_file = $("#upload-image");
     var message_data = {};
+    var image_button = $("#imageButton");
 
     message_box.hide();
     message_form.hide();
@@ -33,11 +34,23 @@ $( document ).ready(function() {
     error_box.hide();
 
 image_file.on("change",function(e){
-	console.log("hahaha");
-	if( validate_image_data(e.target.files[0]) == true ){
-	
-		message_data.file = {data:e.target.files[0],type:e.target.files[0].type }
+	var file = e.target.files[0];
+
+	if(file === undefined){
+		style_image_button(undefined);
+		return;
+	}
+	if( validate_image_data(file) == true ){
+		
+		message_data.file = {data:file,type:file.type , originalName:file.name }
+		style_image_button(file);
+		clear_error_box();
 	}else{
+	
+		image_file.val("");
+		delete message_data.file ; 
+		image_file.trigger("change");
+
 		display_error("invalid filetype or filesize must not exceed:" + allowed_image_size + " bytes");
 	}
     
@@ -103,14 +116,15 @@ image_file.on("change",function(e){
 
     });
     socket.on("update_chat_box",function(data){
-    		console.log(data.file);
- 			if(data.file != null || data.file != ""){
+    		
+ 			if(data.file != undefined || data.file != null){
  				
  				bytes = data.file.data;
  				message_box.append("<p>" + data.userName +": sent a image </p>")
  				message_box.append('<img src="data:'+ data.file.type +';base64,' + escape(bytes) + '" height="auto" width="100px">');
  				message_box.scrollTop(999999999);
- 				data.file = "";
+ 				delete message_data.file;
+ 				style_image_button(undefined);
  				console.log(data.file);
  			}
  			if(data.message !== false){
@@ -143,8 +157,9 @@ image_file.on("change",function(e){
     }
 
     function new_message(data){
-
+    	console.log(data);
     	socket.emit("send_message",data);
+    	chat_field.val("");
     }
 
 	socket.on('disconnect',function(){
@@ -167,7 +182,6 @@ image_file.on("change",function(e){
     	error_box.hide();
 	}
 	function validate_image_data(file){
-
 		fileType = file.type;
 		name = file.name ;
 		size = file.size ;
@@ -194,5 +208,28 @@ image_file.on("change",function(e){
         return valid === true;
 		
 	}
+	function style_image_button(data){
+		file = data;
+
+		if(file === undefined){
+			image_button.css('background-image','');
+			if(image_button.hasClass("img_appended")){
+				image_button.removeClass("img_appended");
+			}
+			
+			return ;
+		}
+
+		reader = new FileReader();
+		reader.onloadend = function(){
+			image_button.css('background-image','url("'+ reader.result +'")');
+			image_button.addClass("img_appended");
+	
+		}
+		reader.readAsDataURL(file);
+		
+
+	}
+
 
 });

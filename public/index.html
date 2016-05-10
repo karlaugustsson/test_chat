@@ -41,6 +41,13 @@
 		content:"\e060";
 
 	}
+	button.image.upload.img_appended{
+		background-size: cover;
+		background-repeat: no-repeat;
+	}
+	button.image.upload.img_appended::after{
+		visibility: hidden;
+	}
 
 </style>
 <head>
@@ -99,7 +106,7 @@
 						<input type="submit" class="btn btn-primary" value="send">
 
 						<input id="upload-image" type="file" style="display:none;" name="file_upload" accept="image/*" >
-						<button class="btn btn-primary image upload" onclick="document.getElementById('upload-image').click();return false;"></button>
+						<button id="imageButton" class="btn btn-primary image upload" onclick="document.getElementById('upload-image').click();return false;"></button>
 						  </div>
 
 						</form>	
