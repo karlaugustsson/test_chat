@@ -10,7 +10,7 @@ $( document ).ready(function() {
 
     var nameField = $("#nameField");
     var username_form = $("#nameForm");
-
+    console.log(window.location.href + ":" + portNumber);
     var socket = io(window.location.href + ":" + portNumber ).connect();
     
     var error_box = $("#errorBox");	
