@@ -11,7 +11,7 @@ $( document ).ready(function() {
     var nameField = $("#nameField");
     var username_form = $("#nameForm");
     console.log("http://178.62.46.247"+ ":" + portNumber);
-    var socket = io("178.62.46.247" + ":" + portNumber ).connect();
+    var socket = io(window.location.host + ":" + portNumber ).connect();
     
     var error_box = $("#errorBox");	
     
