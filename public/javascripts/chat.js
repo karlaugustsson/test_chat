@@ -11,7 +11,7 @@ $( document ).ready(function() {
     var nameField = $("#nameField");
     var username_form = $("#nameForm");
     console.log(window.location.host + ":" + portNumber);
-    var socket = io(window.location.host + ":" + portNumber ).connect();
+    var socket = io(window.location.host).connect();
     
     var error_box = $("#errorBox");	
     
@@ -20,6 +20,7 @@ $( document ).ready(function() {
     var chatApp = $("#chatApp");
     var users_online_container = $("#online_container");
     var users_online_box = $("#usersOnlineBox");
+    var users_online_box_small = $("#num_users_online");
     var chat_field = $("#chatField");
     var message_form = $("#chatForm");
     var message_box = $("#chatBox");
@@ -105,9 +106,9 @@ image_file.on("change",function(e){
     })
     socket.on("update_users_online_list",function(users){
 
-   
+   			
     		users_online_box.html("");
-   
+   			users_online_box_small.html("<span class=\"user\">" + users.length + (users.length == 1 ? " user" : " users")+" online</span>" )
     		users.map(function(user){
     			users_online_box.append('<span class="user">' + user.userName + '</span>');
     		});				

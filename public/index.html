@@ -21,12 +21,12 @@
     border: 1px solid #C1C1FF;
     overflow: scroll;
 	}
-	#usersOnlineBox  span.user{
+	span.user{
 	display: block;
 	font-family: monospace , arial;
 	cursor: pointer;
 	}
-	#usersOnlineBox > span.user::before{
+	span.user::before{
 		content:"\e008";
 		font-family: 'Glyphicons Halflings';
 		color:#7EFF7E;
@@ -48,6 +48,11 @@
 	button.image.upload.img_appended::after{
 		visibility: hidden;
 	}
+	#num_users_online{
+		width:100%;
+		height: auto;
+		display: none;
+	}
 	@media screen and (max-width: 992px) {
 		.form-group{
 			width:100%;
@@ -63,7 +68,15 @@
 		font-family: inherit;
 		content:"upload image";
 
-	}
+		}
+		#num_users_online{
+			width:100%;
+			height: auto;
+			display: block;
+		}
+		#online_container{
+			display:none !important;
+		}
 	}
 </style>
 <head>
@@ -97,8 +110,7 @@
 		</div>
 		<div class="row">
 		<div class="col-xs-12">
-			
-			<form class="form-inline" id="nameForm" mulr>
+			<form class="form-inline" id="nameForm">
 			  <div class="form-group">
 			    <label for="name">Name:</label>
 					<input id="nameField" name="name"type="text" class="form-control" placeholder="Enter a username">	
@@ -114,6 +126,9 @@
 
 					<div class="col-xs-12 col-md-4">
 						<div class="row">
+							<div id="num_users_online">
+				
+							</div>
 							<div id="chatBox"></div>
 						</div>
 						<div class="row">
