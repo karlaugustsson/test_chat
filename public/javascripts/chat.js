@@ -4,7 +4,7 @@ $( document ).ready(function() {
     var portNumber = 3000;
 
     var valid_img_ext = [".jpg" , ".jpeg" , ".png" , ".gif"];
-    var allowed_image_size = 100000;
+    var allowed_image_size = 10485760;
     var loggedIn = false;
 
 
