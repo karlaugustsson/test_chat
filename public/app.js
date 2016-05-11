@@ -99,9 +99,10 @@ io.sockets.on("connect" , function(socket){
 
 				var found_user = users.indexOf(searchUsername);
 				console.log(users);
+
 				if ( found_user !== -1 ){
 				
-				data.message = message;
+				data.message = message.substring(endOfUsernameIndex,message.length);
 				data.userName = socket.userName;
 				
 				

@@ -40,6 +40,7 @@ $( document ).ready(function() {
     error_box.hide();
 
 image_file.on("change",function(e){
+
 	var file = e.target.files[0];
 
 	if(file === undefined){
@@ -70,9 +71,10 @@ image_file.on("change",function(e){
     	
     	e.preventDefault();
     	
-    	username = nameField.val();
+    	username = strip_tags(nameField.val());
 
     	if(username.length <= 0){
+
     		display_error("please eneter a nickname shithead");
     		return;
     	}
@@ -129,7 +131,7 @@ image_file.on("change",function(e){
  			if(data.file != undefined || data.file != null){
  				
  				bytes = data.file.data;
- 				message_box.append("<p>" + data.userName +": sent a image </p>")
+ 				message_box.append("<p>" +  data.userName  +": sent a image </p>")
  				message_box.append('<img src="data:'+ data.file.type +';base64,' + escape(bytes) + '" height="auto" width="100px">');
  				message_box.scrollTop(999999999);
  				delete message_data.file;
@@ -137,11 +139,14 @@ image_file.on("change",function(e){
  				console.log(data.file);
  			}
  			if(data.message !== false){
- 				console.log(data.whisper);
+
+ 				var username = data.userName  ;
+ 				var message = data.message  ; 
+
  				if(data.whisper !== undefined){
- 					message_box.append( "<p><span class=\"whisper\">" + data.userName  + " whispers</span>:" + data.message + "</p>");
+ 					message_box.append( "<p><span class=\"whisper\">" + username + " whispers</span>:" + message + "</p>");
  				}else{
- 					message_box.append( "<p>" + data.userName  + ":" + data.message + "</p>");
+ 					message_box.append( "<p>" + username  + ":" + message  + "</p>");
  				}
  				
  				message_box.scrollTop(999999999);
@@ -161,13 +166,13 @@ image_file.on("change",function(e){
     function get_message_data(){
 
     	if(chat_field.val() != ""){
-    		return chat_field.val()
+    		return strip_tags(chat_field.val());
     	}
     	return false;
     }
 
     function new_message(data){
-    	console.log(data);
+    	
     	socket.emit("send_message",data,function(error){
     		display_error(error)
     	});
@@ -243,6 +248,10 @@ image_file.on("change",function(e){
 		reader.readAsDataURL(file);
 		
 
+	}
+	function strip_tags(text){
+		var regex = /(<([^>]+)>)/ig
+		return text.replace(regex, "");
 	}
 
 
