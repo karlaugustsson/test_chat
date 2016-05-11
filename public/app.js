@@ -61,8 +61,20 @@ io.sockets.on("connect" , function(socket){
 	socket.on("send_message",function(data){
 
 		if(data.file){
-			var image = new Buffer(data.file.data , "binary").toString("base64");
-			data.file.data = image ;
+
+		
+			var hex_accepted = ['ffd8ffe0' , "47494638" , "89504e47"]
+			var hex_string = data.file.data.slice(0, 4).toString('hex');
+			
+
+			
+			if(hex_accepted.indexOf(hex_string) != -1){
+				
+				var image = new Buffer(data.file.data, "binary").toString("base64").trim();
+		
+				data.file.data = image ;	
+			}
+
 		}
 		data.userName = socket.userName;
 		

@@ -65,7 +65,7 @@ image_file.on("change",function(e){
     	
     	e.preventDefault();
     	
-    	var username = nameField.val();
+    	var username = escape(nameField.val());
 
     	if(username.length <= 0){
     		display_error("please eneter a nickname shithead");
@@ -110,7 +110,7 @@ image_file.on("change",function(e){
     		users_online_box.html("");
    			users_online_box_small.html("<span class=\"user\">" + users.length + (users.length == 1 ? " user" : " users")+" online</span>" )
     		users.map(function(user){
-    			users_online_box.append('<span class="user">' + user.userName + '</span>');
+    			users_online_box.append('<span class="user">' + escape(user.userName) + '</span>');
     		});				
 
 
@@ -121,7 +121,7 @@ image_file.on("change",function(e){
  			if(data.file != undefined || data.file != null){
  				
  				bytes = data.file.data;
- 				message_box.append("<p>" + data.userName +": sent a image </p>")
+ 				message_box.append("<p>" + escape(data.userName) +": sent a image </p>")
  				message_box.append('<img src="data:'+ data.file.type +';base64,' + escape(bytes) + '" height="auto" width="100px">');
  				message_box.scrollTop(999999999);
  				delete message_data.file;
@@ -130,7 +130,7 @@ image_file.on("change",function(e){
  			}
  			if(data.message !== false){
 
- 				message_box.append( "<p>" + data.userName + ":" + data.message + "</p>");
+ 				message_box.append( "<p>" + escape(data.userName ) + ":" + escape(data.message) + "</p>");
  				message_box.scrollTop(999999999);
 
  			}
@@ -188,9 +188,10 @@ image_file.on("change",function(e){
 		size = file.size ;
 		valid = false;
 
-        for (var i = 0; i < valid_img_ext.length -1; i++) {
+        for (var i = 0; i < valid_img_ext.length; i++) {
         			
                     var current_ext = valid_img_ext[i];
+                    console.log(current_ext);
                     if (name.substr(name.length - current_ext.length, current_ext.length).toLowerCase() == current_ext.toLowerCase()) {
                         valid = true;
                         break;
@@ -202,7 +203,7 @@ image_file.on("change",function(e){
    			valid = false;
    		}
    		if(fileType.match(/image/gi) == false){
-   	
+   			
 			valid = false;
 		}
 
