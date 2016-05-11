@@ -98,7 +98,7 @@ io.sockets.on("connect" , function(socket){
 				
 
 				var found_user = users.indexOf(searchUsername);
-				console.log(users);
+				
 
 				if ( found_user !== -1 ){
 				

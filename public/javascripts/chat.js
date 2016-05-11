@@ -136,7 +136,7 @@ image_file.on("change",function(e){
  				message_box.scrollTop(999999999);
  				delete message_data.file;
  				style_image_button(undefined);
- 				console.log(data.file);
+ 				
  			}
  			if(data.message !== false){
 
@@ -208,7 +208,7 @@ image_file.on("change",function(e){
         for (var i = 0; i < valid_img_ext.length; i++) {
         			
                     var current_ext = valid_img_ext[i];
-                    console.log(current_ext);
+                    
                     if (name.substr(name.length - current_ext.length, current_ext.length).toLowerCase() == current_ext.toLowerCase()) {
                         valid = true;
                         break;
