@@ -54,12 +54,11 @@ io.sockets.on("connect" , function(socket){
 
 		if( users.indexOf(data.userName) === -1 ){
 			
-
+		create_new_user(socket , data.userName );
 		callback(false);
 
-		create_new_user(socket , data.userName );
-
 		}else{
+
 			callback(true)
 		}
 
@@ -73,60 +72,49 @@ io.sockets.on("connect" , function(socket){
 	socket.on("send_message",function(data,callback){
 		message = data.message.toString().trim();
 
-		if(data.file){
-
-			var hex_accepted = ['ffd8ffe0' , "47494638" , "89504e47"]
-			var hex_string = data.file.data.slice(0, 4).toString('hex');
-			
-			if(hex_accepted.indexOf(hex_string) != -1){
-				
-				var image = new Buffer(data.file.data, "binary").toString("base64").trim();
+		if(data.file && validate_image_file(data.file.data) == true ){
 		
-				data.file.data = image ;	
-			}
-
+			data.file.data = new Buffer(data.file.data, "binary").toString("base64").trim() ;	
 		}
 		
-		if ( message.substring(0,3) == "/w " ){
+		if ( message_whisper(message) == true ){
 
-			message = message.substring(3,message.length);
+			message = remove_whisper_prefix(message);
 		
-			var endOfUsernameIndex = message.indexOf(" ");
-		
-			if ( endOfUsernameIndex != -1 ){
-				searchUsername = message.substring(0,endOfUsernameIndex);
-				
-
-				var found_user = users.indexOf(searchUsername);
-				
-
-				if ( found_user !== -1 ){
-				
-				data.message = message.substring(endOfUsernameIndex,message.length);
-				data.userName = socket.userName;
-				
+			var searchUsername = find_whisper_username(message);
+			
+			if ( typeof searchUsername === 'number' ){
 				
 				var soc = socket_connections.find(function(socket){
-					if(socket.userName == users[found_user]){
-						return socket;
-					}
-				});
-
-		
-	
-				if ( soc !== undefined ){
-					
-					data.whisper = true;
-					soc.emit("update_chat_box",data);
-				}
 				
-				}else{
-					callback("user was not found :(")
+				if(socket.userName == users[searchUsername]){
+						return socket;
 				}
-			
-		}else{
-			callback("input for whisper not valid");
-		}
+
+				});
+			}
+	
+			if ( soc !== undefined ){
+
+				data.message = message.substring(searchUsername.length,message.length);
+				data.userName = socket.userName;
+				data.whisper = true;
+
+				soc.emit("update_chat_box",data);
+				
+				}
+
+
+			if( searchUsername == null ){
+
+				callback("User was not found :(");
+			}
+
+			if(searchUsername === false ){
+
+				callback("input for whisper not valid");
+			}
+
 
 		}else{
 		
@@ -143,6 +131,43 @@ function create_new_user(socket ,userName){
 	socket.userName = userName;
 	users.push(userName);
 	io.sockets.emit("update_users_online_list",users);
+}
+
+function validate_image_file(image){
+	var hex_accepted = ['ffd8ffe0' , "47494638" , "89504e47"]
+	var hex_string = image.slice(0, 4).toString('hex');
+			
+	return (hex_accepted.indexOf(hex_string) != -1);
+}
+
+function message_whisper(message){
+	return message.substring(0,3) == "/w ";
+}
+function remove_whisper_prefix(message){
+	return message.substring(3,message.length);
+}
+function find_whisper_username(message){
+	
+	var endOfUsernameIndex = message.indexOf(" ");
+	
+	
+	if ( endOfUsernameIndex != -1 ){
+
+		var searchUsername = message.substring(0,endOfUsernameIndex);
+		
+
+		found_user = users.indexOf(searchUsername);
+		
+		if ( found_user != -1 ){
+				
+		return found_user ;
+					
+		}else{
+			return null;
+		}
+	}
+	return false;
+		
 }
 
 

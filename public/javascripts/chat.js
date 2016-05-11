@@ -15,10 +15,8 @@ $( document ).ready(function() {
     var loginForm = $("#loginForm");
     var nameField = $("#nameField");
     var username_form = $("#nameForm");
-    //console.log(window.location.host + ":" + portNumber);
     
     
-   
     
     var chatApp = $("#chatApp");
     var users_online_container = $("#online_container");
@@ -127,12 +125,16 @@ image_file.on("change",function(e){
 
     });
     socket.on("update_chat_box",function(data){
-    		
- 			if(data.file != undefined || data.file != null){
+    		 	var username = data.userName  ;
+ 				var message = data.message  ; 
+ 				var whisper = data.whisper ; 
+ 				var file = data.file;
+ 			if(file != undefined || file != null){
  				
- 				bytes = data.file.data;
- 				message_box.append("<p>" +  data.userName  +": sent a image </p>")
- 				message_box.append('<img src="data:'+ data.file.type +';base64,' + escape(bytes) + '" height="auto" width="100px">');
+ 				bytes = file.data;
+
+ 				message_box.append("<p>" +  username  +": sent a " + ( whisper !== undefined ? "private " : "") + "image </p>")
+ 				message_box.append('<img src="data:'+ file.type +';base64,' + escape(bytes) + '" height="auto" width="100px">');
  				message_box.scrollTop(999999999);
  				delete message_data.file;
  				style_image_button(undefined);
@@ -140,10 +142,9 @@ image_file.on("change",function(e){
  			}
  			if(data.message !== false){
 
- 				var username = data.userName  ;
- 				var message = data.message  ; 
 
- 				if(data.whisper !== undefined){
+
+ 				if(whisper !== undefined){
  					message_box.append( "<p><span class=\"whisper\">" + username + " whispers</span>:" + message + "</p>");
  				}else{
  					message_box.append( "<p>" + username  + ":" + message  + "</p>");
