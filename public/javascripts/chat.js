@@ -2,36 +2,41 @@ $( document ).ready(function() {
     
     
     var portNumber = 3000;
+    var socket = io(window.location.host).connect();
+    var message_data = {};
+    var username;
 
     var valid_img_ext = [".jpg" , ".jpeg" , ".png" , ".gif"];
     var allowed_image_size = 10485760;
-    var loggedIn = false;
-
-
-    var nameField = $("#nameField");
-    var username_form = $("#nameForm");
-    console.log(window.location.host + ":" + portNumber);
-    var socket = io(window.location.host).connect();
     
     var error_box = $("#errorBox");	
-    
 
+    var username_container = $("#username_container");
     var loginForm = $("#loginForm");
+    var nameField = $("#nameField");
+    var username_form = $("#nameForm");
+    //console.log(window.location.host + ":" + portNumber);
+    
+    
+   
+    
     var chatApp = $("#chatApp");
     var users_online_container = $("#online_container");
     var users_online_box = $("#usersOnlineBox");
     var users_online_box_small = $("#num_users_online");
-    var chat_field = $("#chatField");
+    
+    var message_container = $("#message_container")
     var message_form = $("#chatForm");
     var message_box = $("#chatBox");
+    var chat_field = $("#chatField");
     var image_file = $("#upload-image");
-    var message_data = {};
     var image_button = $("#imageButton");
 
-    message_box.hide();
-    message_form.hide();
-    users_online_container.hide();
-    users_online_box.hide();
+
+    
+
+ 	message_container.hide();
+ 	users_online_container.hide();
     error_box.hide();
 
 image_file.on("change",function(e){
@@ -65,7 +70,7 @@ image_file.on("change",function(e){
     	
     	e.preventDefault();
     	
-    	var username = escape(nameField.val());
+    	username = nameField.val();
 
     	if(username.length <= 0){
     		display_error("please eneter a nickname shithead");
@@ -94,7 +99,7 @@ image_file.on("change",function(e){
     
     	message_data.message = get_message_data();
 
-    	if(message_data.message === false && message_data.file === null ){
+    	if(message_data.message === false && message_data.file === undefined ){
 
     		return;
     	}
@@ -110,7 +115,10 @@ image_file.on("change",function(e){
     		users_online_box.html("");
    			users_online_box_small.html("<span class=\"user\">" + users.length + (users.length == 1 ? " user" : " users")+" online</span>" )
     		users.map(function(user){
-    			users_online_box.append('<span class="user">' + escape(user.userName) + '</span>');
+
+    			var me = ( username == user ) ? " me" : "" ;
+    			users_online_box.append('<span class="user' + me + '">' + user + '</span>');
+    			
     		});				
 
 
@@ -121,7 +129,7 @@ image_file.on("change",function(e){
  			if(data.file != undefined || data.file != null){
  				
  				bytes = data.file.data;
- 				message_box.append("<p>" + escape(data.userName) +": sent a image </p>")
+ 				message_box.append("<p>" + data.userName +": sent a image </p>")
  				message_box.append('<img src="data:'+ data.file.type +';base64,' + escape(bytes) + '" height="auto" width="100px">');
  				message_box.scrollTop(999999999);
  				delete message_data.file;
@@ -129,8 +137,13 @@ image_file.on("change",function(e){
  				console.log(data.file);
  			}
  			if(data.message !== false){
-
- 				message_box.append( "<p>" + escape(data.userName ) + ":" + escape(data.message) + "</p>");
+ 				console.log(data.whisper);
+ 				if(data.whisper !== undefined){
+ 					message_box.append( "<p><span class=\"whisper\">" + data.userName  + " whispers</span>:" + data.message + "</p>");
+ 				}else{
+ 					message_box.append( "<p>" + data.userName  + ":" + data.message + "</p>");
+ 				}
+ 				
  				message_box.scrollTop(999999999);
 
  			}
@@ -138,14 +151,10 @@ image_file.on("change",function(e){
     });
 
     function start_chat(){
-    
-    username_form.hide();
-    error_box.hide();
-
-    message_box.show();
-    message_form.show();
+    username_container.hide();
+    message_container.show()
     users_online_container.show();
-    users_online_box.show();
+   
    
     }
 
@@ -159,7 +168,10 @@ image_file.on("change",function(e){
 
     function new_message(data){
     	console.log(data);
-    	socket.emit("send_message",data);
+    	socket.emit("send_message",data,function(error){
+    		display_error(error)
+    	});
+    	clear_error_box();
     	chat_field.val("");
     }
 
