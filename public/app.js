@@ -36,13 +36,15 @@ io.sockets.on("connect" , function(socket){
 		var index = users.indexOf(socket.userName);
 		
 
-		if(index == -1){
-			return
+		if( index > -1 ){
+			users.splice(index , 1);
+		}else{
+			return;
 		}
 
 
-		users.splice(index,1);
-
+		
+		console.log(users);
 		console.log(socket.userName + " left the chat");
 	
 		io.sockets.emit("update_users_online_list",users);
