@@ -2,7 +2,7 @@ $( document ).ready(function() {
     
     
     var portNumber = 3000;
-    var socket = io(window.location.host).connect();
+    var socket = io(window.location.host + port).connect();
     var message_data = {};
     var username;
 
@@ -71,25 +71,32 @@ image_file.on("change",function(e){
     	
     	username = strip_tags(nameField.val());
 
-    	if(username.length <= 0){
+    	if(username.length <= 0 ){
 
-    		display_error("please eneter a nickname shithead");
+    		display_error("please enter a name");
+    		return;
+    	}
+    	if(valid_username_input(username) == true){
+	    	
+	    	socket.emit("user_exist",{userName:username},function(answer){
+	    		
+	    		if(answer == false){
+
+	    			chat_field.val("");
+	    			start_chat(username);
+	    			clear_error_box();
+
+	    		}else{
+	    			display_error("sorry, that username has been taken or is invalid")
+	    		}
+
+	    	});		
+    	}else{
+    		display_error("no spaces for god sake");
     		return;
     	}
     	
-    	socket.emit("user_exist",{userName:username},function(answer){
-    		
-    		if(answer == false){
 
-    			chat_field.val("");
-    			start_chat(username);
-    			clear_error_box();
-
-    		}else{
-    			display_error("sorry, that username has been taken or is invalid")
-    		}
-
-    	})
     });
 
 
@@ -250,10 +257,19 @@ image_file.on("change",function(e){
 		
 
 	}
+
 	function strip_tags(text){
 		var regex = /(<([^>]+)>)/ig
 		return text.replace(regex, "");
 	}
 
+	function validate_username_input(data){
+		var pattern = /\s/g
+		
+		if data.match(pattern === undefined){
+			return true
+		}
+		return false
+	}
 
 });
