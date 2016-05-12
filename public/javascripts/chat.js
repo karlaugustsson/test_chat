@@ -2,7 +2,7 @@ $( document ).ready(function() {
     
     
     var portNumber = 3000;
-    var socket = io(window.location.host + port).connect();
+    var socket = io(window.location.host + portNumber).connect();
     var message_data = {};
     var username;
 
