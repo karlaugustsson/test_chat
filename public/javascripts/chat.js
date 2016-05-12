@@ -2,7 +2,7 @@ $( document ).ready(function() {
     
     
     var portNumber = 3000;
-    var socket = io(window.location.host + ":" + portNumber ).connect();
+    var socket = io(window.location.host).connect();
     var message_data = {};
     var username;
 
@@ -122,7 +122,7 @@ image_file.on("change",function(e){
     		users_online_box.html("");
    			users_online_box_small.html("<span class=\"user\">" + users.length + (users.length == 1 ? " user" : " users")+" online</span>" )
     		users.map(function(user){
-
+    			console.log(user);
     			var me = ( username == user ) ? " me" : "" ;
     			users_online_box.append('<span class="user' + me + '">' + user + '</span>');
     			
