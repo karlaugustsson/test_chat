@@ -266,7 +266,7 @@ image_file.on("change",function(e){
 	function validate_username_input(data){
 		var pattern = /\s/g
 		
-		if data.match(pattern === undefined){
+		if (data.match(pattern) === undefined){
 			return true
 		}
 		return false
