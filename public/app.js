@@ -72,14 +72,20 @@ io.sockets.on("connect" , function(socket){
 	});
 
 	socket.on("send_message",function(data,callback){
-		message = data.message.toString().trim();
+		socket.emit("clear_inputs");
+		if(data.message !== false){
+			message = data.message.toString().trim();
+		}else{
+			message = data.message;
+		}
+		
 
 		if(data.file && validate_image_file(data.file.data) == true ){
 		
 			data.file.data = new Buffer(data.file.data, "binary").toString("base64").trim() ;	
 		}
 		
-		if ( message_whisper(message) == true ){
+		if ( message != false && message_whisper(message) == true ){
 
 			message = remove_whisper_prefix(message);
 		
@@ -98,7 +104,8 @@ io.sockets.on("connect" , function(socket){
 	
 			if ( soc !== undefined ){
 
-				data.message = message.substring(searchUsername.length,message.length);
+
+				data.message = message.substring(users[searchUsername].length,message.length);
 				data.userName = socket.userName;
 				data.whisper = true;
 

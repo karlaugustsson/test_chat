@@ -2,7 +2,7 @@ $( document ).ready(function() {
     
     
     var portNumber = 3000;
-    var socket = io(window.location.host +":"+ portNumber).connect();
+    var socket = io(window.location.host ).connect();
     var message_data = {};
     var username;
 
@@ -136,24 +136,24 @@ image_file.on("change",function(e){
  				var message = data.message  ; 
  				var whisper = data.whisper ; 
  				var file = data.file;
- 			if(file != undefined || file != null){
- 				
+ 				console.log(data);
+ 				if(file != undefined || file != null){
+ 	
  				bytes = file.data;
 
  				message_box.append("<p>" +  username  +": sent a " + ( whisper !== undefined ? "private " : "") + "image </p>")
  				message_box.append('<img src="data:'+ file.type +';base64,' + escape(bytes) + '" height="auto" width="100px">');
  				message_box.scrollTop(999999999);
- 				delete message_data.file;
- 				style_image_button(undefined);
+
  				
  			}
- 			if(data.message !== false){
-
-
+ 			console.log(message);
+ 			if(message != false){
 
  				if(whisper !== undefined){
  					message_box.append( "<p><span class=\"whisper\">" + username + " whispers</span>:" + message + "</p>");
  				}else{
+
  					message_box.append( "<p>" + username  + ":" + message  + "</p>");
  				}
  				
@@ -184,8 +184,6 @@ image_file.on("change",function(e){
     	socket.emit("send_message",data,function(error){
     		display_error(error)
     	});
-    	clear_error_box();
-    	chat_field.val("");
     }
 
 	socket.on('disconnect',function(){
@@ -195,6 +193,12 @@ image_file.on("change",function(e){
 
 
 	});
+	socket.on("clear_inputs",function(){
+		clear_error_box();
+    	chat_field.val("");
+    	delete message_data.file;
+ 		style_image_button(undefined);
+	})
 	function display_error(msg){
 		error_box.show();
     	
@@ -263,10 +267,10 @@ image_file.on("change",function(e){
 		return text.replace(regex, "");
 	}
 
-	function validate_username_input(data){
+	function valid_username_input(data){
 		var pattern = /\s/g
-		
-		if (data.match(pattern) === undefined){
+		console.log(data.match(pattern));
+		if (data.match(pattern) === null){
 			return true
 		}
 		return false
