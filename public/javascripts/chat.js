@@ -2,9 +2,10 @@ $( document ).ready(function() {
     
     
     var portNumber = 3000;
-    var socket = io(window.location.host + ":" + portNumber).connect();
+    var socket = io(window.location.host).connect();
     var message_data = {};
     var username;
+    var chat_running = false;
 
     var valid_img_ext = [".jpg" , ".jpeg" , ".png" , ".gif"];
     var allowed_image_size = 10485760;
@@ -70,21 +71,20 @@ image_file.on("change",function(e){
     	e.preventDefault();
     	
     	username = strip_tags(nameField.val());
-
+    
     	if(username.length <= 0 ){
 
     		display_error("please enter a name");
     		return;
     	}
-    	if(valid_username_input(username) == true){
+    	if( valid_username_input(username) == true ){
 	    	
 	    	socket.emit("user_exist",{userName:username},function(answer){
 	    		
-	    		if(answer == false){
+	    		if( answer == false ){
 
-	    			chat_field.val("");
 	    			start_chat(username);
-	    			clear_error_box();
+	    			
 
 	    		}else{
 	    			display_error("sorry, that username has been taken or is invalid")
@@ -117,7 +117,7 @@ image_file.on("change",function(e){
     	
     })
     socket.on("update_users_online_list",function(users){
-
+    	
    			
     		users_online_box.html("");
    			users_online_box_small.html("<span class=\"user\">" + users.length + (users.length == 1 ? " user" : " users")+" online</span>" )
@@ -132,25 +132,27 @@ image_file.on("change",function(e){
 
     });
     socket.on("update_chat_box",function(data){
-    		 	var username = data.userName  ;
- 				var message = data.message  ; 
- 				var whisper = data.whisper ; 
- 				var file = data.file;
- 				console.log(data);
- 				if(file != undefined || file != null){
+    	
+ 
+    	var username = data.userName  ;
+ 		var message = data.message  ; 
+ 		var whisper = data.whisper ; 
+ 		var file = data.file;
+ 			
+ 		if(file != undefined || file != null){
  	
- 				bytes = file.data;
+ 			bytes = file.data;
 
- 				message_box.append("<p>" +  username  +": sent a " + ( whisper !== undefined ? "private " : "") + "image </p>")
- 				message_box.append('<img src="data:'+ file.type +';base64,' + escape(bytes) + '" height="auto" width="100px">');
- 				message_box.scrollTop(999999999);
+ 			message_box.append("<p>" +  username  +": sent a " + ( whisper !== undefined ? "private " : "") + "image </p>")
+ 			message_box.append('<img src="data:'+ file.type +';base64,' + escape(bytes) + '" height="auto" width="100px">');
+ 			message_box.scrollTop(999999999);
 
  				
  			}
- 			console.log(message);
+ 			
  			if(message != false){
 
- 				if(whisper !== undefined){
+ 				if ( whisper !== undefined ){
  					message_box.append( "<p><span class=\"whisper\">" + username + " whispers</span>:" + message + "</p>");
  				}else{
 
@@ -164,24 +166,26 @@ image_file.on("change",function(e){
     });
 
     function start_chat(){
+
     username_container.hide();
     message_container.show()
     users_online_container.show();
+    clear_error_box();
    
    
     }
 
     function get_message_data(){
 
-    	if(chat_field.val() != ""){
-    		return strip_tags(chat_field.val());
+    	if ( chat_field.val() != "" ){
+    		return strip_tags( chat_field.val() );
     	}
     	return false;
     }
 
     function new_message(data){
     	
-    	socket.emit("send_message",data,function(error){
+    	socket.emit( "send_message",data,function(error){
     		display_error(error)
     	});
     }
@@ -193,6 +197,7 @@ image_file.on("change",function(e){
 
 
 	});
+
 	socket.on("clear_inputs",function(){
 		clear_error_box();
     	chat_field.val("");
@@ -268,9 +273,11 @@ image_file.on("change",function(e){
 	}
 
 	function valid_username_input(data){
-		var pattern = /\s/g
-		console.log(data.match(pattern));
-		if (data.match(pattern) === null){
+		var pattern = /\s/g ; 
+		
+		
+		if (data.match(pattern) == null ){
+
 			return true
 		}
 		return false

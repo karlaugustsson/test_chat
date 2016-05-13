@@ -52,19 +52,14 @@ io.sockets.on("connect" , function(socket){
 	});
 
 	socket.on("user_exist",function(data,callback){
-	if(users.length != 0){
+	
 
-		if( users.indexOf(data.userName) === -1 ){
-			
-		create_new_user(socket , data.userName );
-		callback(false);
-
-		}else{
+	if ( users.indexOf(data.userName) != -1 ){
 
 			callback(true)
-		}
 
 	}else{
+
 		create_new_user(socket , data.userName );
 		callback(false);
 	}
