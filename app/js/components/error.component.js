@@ -12,18 +12,14 @@ var core_1 = require("@angular/core");
 var ErrorComponent = (function () {
     function ErrorComponent() {
         this.error = false;
-        this.change = new core_1.EventEmitter();
     }
-    ErrorComponent.prototype.set_error_message = function (message) {
-        this.message = message;
+    ErrorComponent.prototype.toggle_error = function (arg) {
+        if (arg == true)
+            return this.error = true;
+        return this.error = false;
     };
-    ErrorComponent.prototype.has_error = function () {
-        if (this.error == false) {
-            return "none";
-        }
-        else {
-            return "block";
-        }
+    ErrorComponent.prototype.display_errors = function (arg) {
+        this.error_message = arg;
     };
     ErrorComponent = __decorate([
         core_1.Component({

@@ -4,22 +4,21 @@ import { Component, EventEmitter , Input }  from "@angular/core";
 	templateUrl:"app/html/error.component.html"
 })
 export class ErrorComponent{
-	error:boolean = false;
+
+	error: boolean = false;
 	error_message: string;
-	change = new EventEmitter<any>();
+
+	toggle_error(arg){
+
+		if( arg == true )
+			return this.error = true;
 	
-
-	set_error_message(message){
-		this.message = message;
+		return this.error = false;
 	}
 
-	has_error(){
-		if (this.error == false){
-			return "none";
-		}else{
-			return "block";
-		}
+	display_errors(arg){
+		
+		this.error_message = arg;
 	}
-
 
 }

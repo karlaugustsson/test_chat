@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-xs-12">
-		<div id="errorBox" class="alert alert-danger" [style.display]="has_error()">
-		{{error_message}}
+		<div id="errorBox" class="alert alert-danger" [hidden]="!error" >
+		{{[error_message]}}
 		</div>	
 			</div>
 		</div>
