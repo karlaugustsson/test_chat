@@ -26,8 +26,6 @@
   "dependencies": {
     "express": "^4.13.4",
     "socket.io": "^1.4.6",
-
-
     "@angular/common":  "2.0.0-rc.1",
     "@angular/compiler":  "2.0.0-rc.1",
     "@angular/core":  "2.0.0-rc.1",
@@ -46,9 +44,6 @@
 
     "angular2-in-memory-web-api": "0.0.7",
     "bootstrap": "^3.3.6"
-
-
-
   },
   "devDependencies": {
     "concurrently": "^2.0.0",
