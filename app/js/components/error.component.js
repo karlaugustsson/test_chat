@@ -11,7 +11,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var ErrorComponent = (function () {
     function ErrorComponent() {
+        this.error = false;
+        this.change = new core_1.EventEmitter();
     }
+    ErrorComponent.prototype.set_error_message = function (message) {
+        this.message = message;
+    };
+    ErrorComponent.prototype.has_error = function () {
+        if (this.error == false) {
+            return "none";
+        }
+        else {
+            return "block";
+        }
+    };
     ErrorComponent = __decorate([
         core_1.Component({
             selector: "error",
