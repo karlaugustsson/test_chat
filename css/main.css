@@ -1,0 +1,85 @@
+
+	.footer,.header{
+    background-color: #474545;
+    color: white;
+    margin-top: 50px;
+	}
+	.header{
+		margin-top: 0px;
+		margin-bottom: 50px;
+	}
+	.fotter ul {
+		list-style: none;
+	}
+	.footer ul li a{
+		color: white;
+	}
+	#chatBox{
+	height: 300px;
+    border: 1px solid #C1C1FF;
+    overflow: scroll;
+	}
+	span.user{
+	display: block;
+	font-family: monospace , arial;
+	cursor: pointer;
+	}
+
+	span.user::before{
+		content:"\e008";
+		font-family: 'Glyphicons Halflings';
+		color:#7EFF7E;
+		padding-right: 5px;
+
+	}
+	span.user.me::before{
+		color:darkgreen;
+	}
+	span.whisper{
+		color:red;
+	}
+	#chatForm > .form-group{
+		margin-top: 20px;
+	}
+	#chatForm button.image.upload::after{
+		font-family: 'Glyphicons Halflings';
+		content:"\e060";
+
+	}
+	button.image.upload.img_appended{
+		background-size: cover;
+		background-repeat: no-repeat;
+	}
+	button.image.upload.img_appended::after{
+		visibility: hidden;
+	}
+	#num_users_online{
+		width:100%;
+		height: auto;
+		display: none;
+	}
+	@media screen and (max-width: 992px) {
+		.form-group{
+			width:100%;
+		}
+		.form-inline .form-group > [type="text"] , .btn {
+			margin-bottom:20px;
+			width: 100%;
+		}
+		#chatForm .btn{
+			margin-bottom: 5px;
+		}
+		#chatForm button.image.upload::after{
+		font-family: inherit;
+		content:"upload image";
+
+		}
+		#num_users_online{
+			width:100%;
+			height: auto;
+			display: block;
+		}
+		#online_container{
+			display:none !important;
+		}
+	}

@@ -1,0 +1,92 @@
+<body>
+	<div class="container">
+	
+			<div class="col-xs-12 header">
+				<div class="col-xs-10">
+					<h1> Chattie</h1>
+				</div>
+
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<div id="errorBox"class="alert alert-danger">
+					
+				</div>	
+			</div>
+		</div>
+		<div class="row">
+		<div id="username_container" class="col-xs-12">
+			<form class="form-inline" id="nameForm">
+			  <div class="form-group">
+			    <label for="name">Name:</label>
+					<input id="nameField" name="name"type="text" class="form-control" placeholder="Enter a username">	
+			  </div>
+			<input type="submit" class="btn btn-success" value="jag vill ha ett namn , nu vill jag ha det!">
+			</form>		
+		</div>
+
+		</div>
+
+	
+		
+
+					<div id="message_container" class="col-xs-12 col-md-4">
+						<div class="row">
+							<div id="num_users_online">
+				
+							</div>
+							<div id="chatBox"></div>
+						</div>
+						<div class="row">
+						
+						<form class="form-inline" id="chatForm" enctype="multipart/form-data">
+						  <div class="form-group">
+		
+						<input id="chatField" name="name"type="text" class="form-control" placeholder="chat please">	
+						<input type="submit" class="btn btn-primary" value="send">
+
+						<input id="upload-image" type="file" style="display:none;" name="file_upload" accept="image/*" >
+						<button id="imageButton" class="btn btn-primary image upload" onclick="document.getElementById('upload-image').click();return false;"></button>
+						  </div>
+
+						</form>						
+					
+
+
+						</div>
+							
+				
+					</div>
+
+					<div id="online_container" class="col-xs-3 col-xs-offset-5">
+						<div class="row">
+						<p>online:</p>
+						</div>
+						<div class="row">
+							<div id="usersOnlineBox">
+								<span class="user">Kalle not really</span>
+							</div>
+						</div>
+
+				
+				</div>
+
+	
+		</div>
+
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="footer">
+					<ul>
+						<li><a href="">Fake</a></li>
+						<li><a href="">Fake</a></li>
+						<li><a href="">Fake</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
