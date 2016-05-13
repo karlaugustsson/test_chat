@@ -9,21 +9,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var header_component_1 = require("./header.component");
-var main_component_1 = require("./main.component");
-var footer_component_1 = require("./footer.component");
-var AppComponent = (function () {
-    function AppComponent() {
+var ErrorComponent = (function () {
+    function ErrorComponent() {
     }
-    AppComponent = __decorate([
+    ErrorComponent = __decorate([
         core_1.Component({
-            selector: "my-app",
-            template: "<header></header><main></main><footer></footer>",
-            directives: [header_component_1.HeaderComponent, main_component_1.MainComponent, footer_component_1.FooterComponent]
+            selector: "error",
+            templateUrl: "app/html/error.component.html"
         }), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], ErrorComponent);
+    return ErrorComponent;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.ErrorComponent = ErrorComponent;
+//# sourceMappingURL=error.component.js.map
