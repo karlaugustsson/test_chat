@@ -9,26 +9,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var error_service_1 = require("../services/error.service");
-var ErrorComponent = (function () {
-    function ErrorComponent(_ErrorService) {
+var Observable_1 = require('rxjs/Observable');
+var ErrorStream = (function () {
+    function ErrorStream() {
         var _this = this;
-        this._ErrorService = _ErrorService;
-        this.data = [];
-        this._ErrorService.get_error_stream().subscribe(function (data) { _this.data = data; });
+        this._observable = Observable_1.Observable.create(function (observer) { return _this._observer = observer; });
     }
-    ErrorComponent.prototype.new_error = function (val) {
-        this._ErrorService.new_error(val);
+    ErrorStream.prototype.get_observable = function () {
+        return this._observable;
     };
-    ErrorComponent = __decorate([
-        core_1.Component({
-            selector: "error",
-            templateUrl: "app/html/error.component.html",
-            providers: [error_service_1.ErrorService]
-        }), 
-        __metadata('design:paramtypes', [error_service_1.ErrorService])
-    ], ErrorComponent);
-    return ErrorComponent;
+    ErrorStream = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [])
+    ], ErrorStream);
+    return ErrorStream;
 }());
-exports.ErrorComponent = ErrorComponent;
-//# sourceMappingURL=error.component.js.map
+exports.ErrorStream = ErrorStream;
+//# sourceMappingURL=error-stream.js.map

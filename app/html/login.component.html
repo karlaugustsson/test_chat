@@ -3,10 +3,9 @@
 			<form class="form-inline" id="nameForm">
 			  <div class="form-group">
 			    <label for="name">Name:</label>
-					<input id="nameField" name="name"type="text" class="form-control" placeholder="Enter a username">	
+					<input id="nameField" name="name"type="text" class="form-control" placeholder="Enter a username" #mankey >	
 			  </div>
-			<input type="submit" class="btn btn-success" value="Name please">
+			<input  type="submit" class="btn btn-success" placeholder="enter a name please" (click)="clicked(mankey.value)">
 			</form>		
 		</div>
-
 		</div>

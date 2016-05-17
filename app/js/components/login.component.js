@@ -12,10 +12,14 @@ var core_1 = require("@angular/core");
 var LoginComponent = (function () {
     function LoginComponent() {
     }
+    LoginComponent.prototype.clicked = function (value) {
+        if (value == "error") {
+        }
+    };
     LoginComponent = __decorate([
         core_1.Component({
             selector: "login",
-            templateUrl: "app/html/login.component.html"
+            templateUrl: "app/html/login.component.html",
         }), 
         __metadata('design:paramtypes', [])
     ], LoginComponent);

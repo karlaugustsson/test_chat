@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var error_component_1 = require("./error.component");
 var login_component_1 = require("./login.component");
+var error_service_1 = require("../services/error.service");
 var MainComponent = (function () {
     function MainComponent() {
     }
@@ -19,6 +20,7 @@ var MainComponent = (function () {
             selector: "main",
             templateUrl: "app/html/main.component.html",
             directives: [error_component_1.ErrorComponent, login_component_1.LoginComponent],
+            providers: [error_service_1.ErrorService],
         }), 
         __metadata('design:paramtypes', [])
     ], MainComponent);
