@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-xs-12">
-		<div id="errorBox" class="alert alert-danger" [hidden]="data.length < 1" >
-		{{data.length}}
+		<div id="errorBox" class="alert alert-danger" [hidden]="errors.length < 1" >
+		<p *ngFor="let error of errors">{{error.message}}</p>
 		
 		</div>	
 			</div>

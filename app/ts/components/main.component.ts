@@ -3,7 +3,6 @@ import {ErrorComponent} from "./error.component";
 import { LoginComponent } from "./login.component";
 import { ErrorService } from "../services/error.service";
 
-
 @Component({
 
 	selector: "main",

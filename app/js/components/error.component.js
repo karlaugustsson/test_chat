@@ -14,8 +14,20 @@ var ErrorComponent = (function () {
     function ErrorComponent(_ErrorService) {
         var _this = this;
         this._ErrorService = _ErrorService;
-        this.data = [];
-        this._ErrorService.get_error_stream().subscribe(function (data) { _this.data = data; });
+        this.errors = [];
+        this._ErrorService.ErrorSubject$.subscribe(function (data) {
+            // this.errors.map((err)=>{
+            // 	if(err.message == data){
+            // 		this.errors.splice(err,1)
+            // 	}else{
+            // 		return err;
+            // 	}
+            // })
+            _this.errors.push({ message: data });
+        });
+        this._ErrorService.ErrorClearSubject$.subscribe(function (data) { if (data == true) {
+            _this.errors = [];
+        } });
     }
     ErrorComponent.prototype.new_error = function (val) {
         this._ErrorService.new_error(val);

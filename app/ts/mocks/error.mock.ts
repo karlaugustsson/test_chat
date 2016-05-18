@@ -1,2 +1,2 @@
-import {Error} from "../classes/error.ts"
-export var ERROR: Error[] = [];
+import {Subject} from 'rxjs/Subject'; 
+export var ERROR = new Subject<string>();

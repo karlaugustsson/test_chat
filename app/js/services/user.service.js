@@ -9,26 +9,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var error_mock_1 = require("../mocks/error.mock");
-var clear_error_mock_1 = require("../mocks/clear-error.mock");
-var ErrorService = (function () {
-    function ErrorService() {
-        this.ErrorSubjectSource$ = error_mock_1.ERROR;
-        this.ErrorClearSource$ = clear_error_mock_1.CLEAR_ERROR;
-        this.ErrorSubject$ = this.ErrorSubjectSource$.asObservable();
-        this.ErrorClearSubject$ = this.ErrorClearSource$.asObservable();
+var users_mock_1 = require("../mocks/users.mock");
+var UserService = (function () {
+    function UserService() {
     }
-    ErrorService.prototype.new_error = function (val) {
-        this.ErrorSubjectSource$.next(val);
+    UserService.prototype.get_all_users = function () {
+        return Promise.resolve(users_mock_1.USERS);
     };
-    ErrorService.prototype.clear_errors = function () {
-        this.ErrorClearSource$.next(true);
+    UserService.prototype.add_new_user = function (username) {
+        users_mock_1.USERS.push({ UserName: username });
     };
-    ErrorService = __decorate([
+    UserService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [])
-    ], ErrorService);
-    return ErrorService;
+    ], UserService);
+    return UserService;
 }());
-exports.ErrorService = ErrorService;
-//# sourceMappingURL=error.service.js.map
+exports.UserService = UserService;
+//# sourceMappingURL=user.service.js.map

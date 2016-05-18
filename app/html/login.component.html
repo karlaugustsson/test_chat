@@ -1,11 +1,11 @@
 		<div class="row">
 		<div id="username_container" class="col-xs-12">
-			<form class="form-inline" id="nameForm">
+			<form class="form-inline" id="nameForm" (submit)="attemptLogin($event)" >
 			  <div class="form-group">
 			    <label for="name">Name:</label>
-					<input id="nameField" name="name"type="text" class="form-control" placeholder="Enter a username" #mankey >	
+					<input id="nameField" name="name" type="text" class="form-control" placeholder="Enter a username" [(ngModel)]="username">	
 			  </div>
-			<input  type="submit" class="btn btn-success" placeholder="enter a name please" (click)="clicked(mankey.value)">
+			<input  type="submit" class="btn btn-success" placeholder="enter a name please">
 			</form>		
 		</div>
 		</div>
