@@ -3,12 +3,14 @@
 							<div id="num_users_online">
 				
 							</div>
-							<div id="chatBox">{{chat_box_output}}</div>
+							<div id="chatBox">
+								<p *ngFor="let chat_item of chat_box_items">{{chat_item.username}}:{{chat_item.message}}</p>
+							</div>
 						</div>
 						<div class="row">
 						
 						<form class="form-inline" id="chatForm" enctype="multipart/form-data" (submit)="new_chat_message($event)">
-						  <div class="form-group">
+						<div class="form-group">
 		
 						<input id="chatField" name="name"type="text" class="form-control" placeholder="chat please" [(ngModel)]="chat_field_value">	
 						<input type="submit" class="btn btn-primary" value="send">
