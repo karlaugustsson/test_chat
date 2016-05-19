@@ -1,0 +1,26 @@
+<div id="message_container" class="col-xs-12 col-md-4">
+						<div class="row">
+							<div id="num_users_online">
+				
+							</div>
+							<div id="chatBox">{{chat_box_output}}</div>
+						</div>
+						<div class="row">
+						
+						<form class="form-inline" id="chatForm" enctype="multipart/form-data" (submit)="new_chat_message($event)">
+						  <div class="form-group">
+		
+						<input id="chatField" name="name"type="text" class="form-control" placeholder="chat please" [(ngModel)]="chat_field_value">	
+						<input type="submit" class="btn btn-primary" value="send">
+
+						<input id="upload-image" type="file" style="display:none;" name="file_upload" accept="image/*">
+						<button id="imageButton" class="btn btn-primary image upload" (click)="imageInput.click()"></button>
+						  </div>
+
+						</form>						
+					
+
+
+						</div>				
+</div>
+<online-users></online-users>

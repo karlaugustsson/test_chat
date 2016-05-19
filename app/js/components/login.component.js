@@ -11,10 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var error_service_1 = require("../services/error.service");
 var user_service_1 = require("../services/user.service");
+var router_1 = require('@angular/router');
 var LoginComponent = (function () {
-    function LoginComponent(_ErrorService, _UserService) {
+    function LoginComponent(_ErrorService, _UserService, router) {
         this._ErrorService = _ErrorService;
         this._UserService = _UserService;
+        this.router = router;
         this.username = "";
     }
     LoginComponent.prototype.ngOnInit = function () {
@@ -36,6 +38,7 @@ var LoginComponent = (function () {
             this._ErrorService.clear_errors();
             this._UserService.add_new_user(this.username);
             this.username = "";
+            this.router.navigate(['/chattie']);
         }
     };
     LoginComponent.prototype.new_error = function (message) {
@@ -44,11 +47,13 @@ var LoginComponent = (function () {
     };
     LoginComponent.prototype.user_exists = function () {
         var _this = this;
-        var found = this.users.find(function (user) {
-            var regEx = new RegExp(_this.username, "gi");
-            return user.UserName.match(regEx);
+        var found = this.users.filter(function (user) {
+            if (_this.username.match(new RegExp("^" + user.UserName + "$", "i")) != null) {
+                return true;
+            }
+            return false;
         });
-        if (found != undefined) {
+        if (found.length > 0) {
             return true;
         }
         return false;
@@ -71,7 +76,7 @@ var LoginComponent = (function () {
             templateUrl: "app/html/login.component.html",
             providers: [user_service_1.UserService],
         }), 
-        __metadata('design:paramtypes', [error_service_1.ErrorService, user_service_1.UserService])
+        __metadata('design:paramtypes', [error_service_1.ErrorService, user_service_1.UserService, router_1.Router])
     ], LoginComponent);
     return LoginComponent;
 }());

@@ -2,7 +2,7 @@ import {Component , Input , Output , EventEmitter , OnInit} from "@angular/core"
 import { ErrorService } from "../services/error.service";
 import { UserService} from "../services/user.service";
 import {User} from "../classes/user";
-
+import { Routes, ROUTER_DIRECTIVES,Router } from '@angular/router';
 @Component({
 	selector: "login",
 	templateUrl: "app/html/login.component.html",
@@ -11,10 +11,10 @@ import {User} from "../classes/user";
 })
 
 export class LoginComponent implements OnInit {
-	username: string ="";
+	username:string="";
 	users:User[];
 
-	constructor(private _ErrorService: ErrorService, private _UserService:UserService) {
+	constructor(private _ErrorService: ErrorService, private _UserService: UserService, private router: Router ) {
 
 
 	}
@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
 			this._ErrorService.clear_errors();
 			this._UserService.add_new_user(this.username);
 			this.username = "";
+			this.router.navigate(['/chattie']);
 		}
 
 
@@ -51,12 +52,17 @@ export class LoginComponent implements OnInit {
 	}
 
 	user_exists(){
-		let found = this.users.find((user) => {
-			var regEx = new RegExp(this.username, "gi");
-			return user.UserName.match(regEx);
-		});
 
-		if (found != undefined){
+		let found = this.users.filter((user) => {
+
+			if (this.username.match(new RegExp("^"+user.UserName+"$","i")) != null){
+				return true;
+		}
+			return false;
+
+		});
+	
+		if (found.length > 0) {
 			return true;
 		}
 		return false;
