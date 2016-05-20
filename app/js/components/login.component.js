@@ -60,7 +60,7 @@ var LoginComponent = (function () {
             selector: "login",
             templateUrl: "app/html/login.component.html",
             directives: [router_1.ROUTER_DIRECTIVES],
-            providers: [user_service_1.UserService, socket_service_1.SocketService, error_service_1.ErrorService],
+            providers: [user_service_1.UserService, socket_service_1.SocketService],
         }), 
         __metadata('design:paramtypes', [login_service_1.LoginService, error_service_1.ErrorService, user_service_1.UserService, router_1.Router])
     ], LoginComponent);

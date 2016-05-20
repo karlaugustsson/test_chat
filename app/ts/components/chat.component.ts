@@ -2,6 +2,7 @@ import {Component , OnInit} from "@angular/core";
 import {OnlineUsersComponent} from "./online-users.component";
 import { ChatService } from "../services/chat.service";
 import { Routes, ROUTER_DIRECTIVES, Router } from '@angular/router';
+
 @Component({
 	selector: "chat",
 	templateUrl:"app/html/chat.component.html",

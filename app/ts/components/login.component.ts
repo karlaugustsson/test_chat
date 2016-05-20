@@ -9,7 +9,7 @@ import { LoginService } from "../services/login.service";
 	selector: "login",
 	templateUrl: "app/html/login.component.html",
 	directives:[ROUTER_DIRECTIVES],
-	providers: [UserService , SocketService , ErrorService ],
+	providers: [UserService , SocketService ],
 
 })
 

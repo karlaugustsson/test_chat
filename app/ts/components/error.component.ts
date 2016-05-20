@@ -7,16 +7,11 @@ import {Observable} from 'rxjs/Observable';
 
 @Component({
 	selector: "error",
-	templateUrl:"app/html/error.component.html",
-	
-	providers:[ErrorService]
-	
-
-		
+	templateUrl:"app/html/error.component.html",	
 })
 
 export class ErrorComponent{
-	errors= [];
+	errors = [];
 
 	new_error(val){
 		this._ErrorService.new_error(val);
@@ -24,21 +19,16 @@ export class ErrorComponent{
 
 	constructor(private _ErrorService: ErrorService) {
 
-		this._ErrorService.ErrorSubject$.subscribe(data => {
+		this._ErrorService.get_error_stream().subscribe(data => {
 			
-			// this.errors.map((err)=>{
-			// 	if(err.message == data){
-			// 		this.errors.splice(err,1)
-			// 	}else{
-			// 		return err;
-			// 	}
-			// })
-			this.errors.push({ message: data });
+			if(data == null){
+				this.errors = [];
+			}else{
+				this.errors.push({ message: data });
+			}
+
 		}
 		);
-
-
-		this._ErrorService.ErrorClearSubject$.subscribe(data => { if (data == true){this.errors = []}});
 
 
 	}

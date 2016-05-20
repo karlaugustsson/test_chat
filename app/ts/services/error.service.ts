@@ -1,20 +1,25 @@
-import {Component , Output , EventEmitter , Injectable , OnInit} from "@angular/core";
-import {Subject} from 'rxjs/Subject'; 
-import {ERROR} from "../mocks/error.mock";
-import {CLEAR_ERROR} from "../mocks/clear-error.mock";
+import {Injectable} from "@angular/core";
+import { Observable } from 'rxjs/Observable';
+
 @Injectable()
 export class ErrorService {
-	ErrorSubjectSource$ = ERROR;
-	ErrorClearSource$ = CLEAR_ERROR;
+	observable$;
+	ErrorObserver;
 
-	ErrorSubject$ = this.ErrorSubjectSource$.asObservable();
-	ErrorClearSubject$ = this.ErrorClearSource$.asObservable();
-	
+	constructor(){
+		this.observable$ = new Observable(observer => this.ErrorObserver = observer);
+
+	}
+	get_error_stream(){
+		return this.observable$;
+	}
 	new_error(val) {
-		this.ErrorSubjectSource$.next(val);
+		this.ErrorObserver.next(val);
 	}
 	clear_errors(){
-		this.ErrorClearSource$.next(true);
+		this.ErrorObserver.next(null);
 	}
+
+
 }
 

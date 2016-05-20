@@ -9,20 +9,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var error_mock_1 = require("../mocks/error.mock");
-var clear_error_mock_1 = require("../mocks/clear-error.mock");
+var Observable_1 = require('rxjs/Observable');
 var ErrorService = (function () {
     function ErrorService() {
-        this.ErrorSubjectSource$ = error_mock_1.ERROR;
-        this.ErrorClearSource$ = clear_error_mock_1.CLEAR_ERROR;
-        this.ErrorSubject$ = this.ErrorSubjectSource$.asObservable();
-        this.ErrorClearSubject$ = this.ErrorClearSource$.asObservable();
+        var _this = this;
+        this.observable$ = new Observable_1.Observable(function (observer) { return _this.ErrorObserver = observer; });
     }
+    ErrorService.prototype.get_error_stream = function () {
+        return this.observable$;
+    };
     ErrorService.prototype.new_error = function (val) {
-        this.ErrorSubjectSource$.next(val);
+        this.ErrorObserver.next(val);
     };
     ErrorService.prototype.clear_errors = function () {
-        this.ErrorClearSource$.next(true);
+        this.ErrorObserver.next(null);
     };
     ErrorService = __decorate([
         core_1.Injectable(), 
