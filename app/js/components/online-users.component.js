@@ -19,7 +19,7 @@ var OnlineUsersComponent = (function () {
     };
     OnlineUsersComponent.prototype.get_all_users = function () {
         var _this = this;
-        this._UserService.get_all_users().then(function (users) { return _this.users = users; });
+        this._UserService.get_all_users().subscribe(function (users) { return _this.users = users; });
     };
     OnlineUsersComponent = __decorate([
         core_1.Component({

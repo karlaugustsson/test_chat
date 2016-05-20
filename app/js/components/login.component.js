@@ -12,23 +12,19 @@ var core_1 = require("@angular/core");
 var error_service_1 = require("../services/error.service");
 var user_service_1 = require("../services/user.service");
 var router_1 = require('@angular/router');
+var socket_service_1 = require("../services/socket.service");
+var login_service_1 = require("../services/login.service");
 var LoginComponent = (function () {
-    function LoginComponent(_ErrorService, _UserService, router) {
+    function LoginComponent(_loginService, _ErrorService, _UserService, router) {
+        this._loginService = _loginService;
         this._ErrorService = _ErrorService;
         this._UserService = _UserService;
         this.router = router;
         this.username = "";
     }
-    LoginComponent.prototype.ngOnInit = function () {
-        this.get_all_users();
-    };
-    LoginComponent.prototype.get_all_users = function () {
-        var _this = this;
-        this._UserService.get_all_users().then(function (user) { return _this.users = user; });
-    };
     LoginComponent.prototype.attemptLogin = function (event) {
         event.preventDefault();
-        if (this.user_exists()) {
+        if (this._UserService.user_exists(this.username)) {
             return this.new_error("a user already has that name choose another name");
         }
         else {
@@ -38,25 +34,14 @@ var LoginComponent = (function () {
             this._ErrorService.clear_errors();
             this._UserService.add_new_user(this.username);
             this.username = "";
+            this._loginService.set_login();
+            console.log(this._loginService.isLoggedIn());
             this.router.navigate(['/chattie']);
         }
     };
     LoginComponent.prototype.new_error = function (message) {
         this._ErrorService.clear_errors();
         this._ErrorService.new_error(message);
-    };
-    LoginComponent.prototype.user_exists = function () {
-        var _this = this;
-        var found = this.users.filter(function (user) {
-            if (_this.username.match(new RegExp("^" + user.UserName + "$", "i")) != null) {
-                return true;
-            }
-            return false;
-        });
-        if (found.length > 0) {
-            return true;
-        }
-        return false;
     };
     LoginComponent.prototype.username_ok = function () {
         if (this.username.length < 3) {
@@ -74,9 +59,10 @@ var LoginComponent = (function () {
         core_1.Component({
             selector: "login",
             templateUrl: "app/html/login.component.html",
-            providers: [user_service_1.UserService],
+            directives: [router_1.ROUTER_DIRECTIVES],
+            providers: [user_service_1.UserService, socket_service_1.SocketService, error_service_1.ErrorService],
         }), 
-        __metadata('design:paramtypes', [error_service_1.ErrorService, user_service_1.UserService, router_1.Router])
+        __metadata('design:paramtypes', [login_service_1.LoginService, error_service_1.ErrorService, user_service_1.UserService, router_1.Router])
     ], LoginComponent);
     return LoginComponent;
 }());

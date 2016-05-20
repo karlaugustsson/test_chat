@@ -3,33 +3,28 @@ import { ErrorService } from "../services/error.service";
 import { UserService} from "../services/user.service";
 import {User} from "../classes/user";
 import { Routes, ROUTER_DIRECTIVES,Router } from '@angular/router';
+import {SocketService } from "../services/socket.service";
+import { LoginService } from "../services/login.service";
 @Component({
 	selector: "login",
 	templateUrl: "app/html/login.component.html",
-	providers: [UserService],
+	directives:[ROUTER_DIRECTIVES],
+	providers: [UserService , SocketService , ErrorService ],
 
 })
 
-export class LoginComponent implements OnInit {
+export class LoginComponent{
+
 	username:string="";
-	users:User[];
 
-	constructor(private _ErrorService: ErrorService, private _UserService: UserService, private router: Router ) {
-
-
-	}
-	ngOnInit() {
-		this.get_all_users();
-	}
-
-	get_all_users() {
-		this._UserService.get_all_users().then(user => this.users = user );
+	constructor(private _loginService:LoginService, private _ErrorService: ErrorService, private _UserService: UserService, private router: Router ) {
 	}
 
 	attemptLogin(event) {
+
 		event.preventDefault();
 
-		if(this.user_exists()){
+		if(this._UserService.user_exists(this.username)){
 			return this.new_error("a user already has that name choose another name")
 		}else{
 
@@ -39,6 +34,8 @@ export class LoginComponent implements OnInit {
 			this._ErrorService.clear_errors();
 			this._UserService.add_new_user(this.username);
 			this.username = "";
+			this._loginService.set_login();
+			console.log(this._loginService.isLoggedIn());
 			this.router.navigate(['/chattie']);
 		}
 
@@ -51,22 +48,6 @@ export class LoginComponent implements OnInit {
 		this._ErrorService.new_error(message);
 	}
 
-	user_exists(){
-
-		let found = this.users.filter((user) => {
-
-			if (this.username.match(new RegExp("^"+user.UserName+"$","i")) != null){
-				return true;
-		}
-			return false;
-
-		});
-	
-		if (found.length > 0) {
-			return true;
-		}
-		return false;
-	}
 
 	username_ok(){
 		if(this.username.length < 3){

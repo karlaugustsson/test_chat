@@ -26,47 +26,43 @@ app.get("/",function(req,res){
 	res.sendFile(__dirname + "/index.html")
 });
 
-server.listen(3000);
+server.listen(4000);
 
 io.sockets.on("connect" , function(socket){
 	
+	console.log(" a new connection has been established")
 
 	socket.on("disconnect",function(){
 		
-		var index = users.indexOf(socket.userName);
-		
-
-		if( index > -1 ){
-			users.splice(index , 1);
-		}else{
+		if(!socket.userName){
 			return;
 		}
+			
+			users = users.filter((user) => {
+				if(user.UserName != socket.userName){
+					return user;
+				}
+			});
 
+			console.log("yeah so " + socket.userName + " had to leave , we will miss that person forever ")
 
-		
-		console.log(users);
-		console.log(socket.userName + " left the chat");
 	
 		io.sockets.emit("update_users_online_list",users);
 
 	});
-
-	socket.on("user_exist",function(data,callback){
+	socket.on("request_users",function(callback){
+		callback(users);
+	});
+	socket.on("create_new_user",function(username){
+		console.log("new user was created " + username)
+		users.push({UserName:username});
+		socket.userName = username;
+		io.sockets.emit("get_users",users)
+	})
+	socket.on("send_message",function(data,callback){
 	
 
-	if ( users.indexOf(data.userName) != -1 ){
 
-			callback(true)
-
-	}else{
-
-		create_new_user(socket , data.userName );
-		callback(false);
-	}
-
-	});
-
-	socket.on("send_message",function(data,callback){
 		socket.emit("clear_inputs");
 		if(data.message !== false){
 			message = data.message.toString().trim();
@@ -129,14 +125,6 @@ io.sockets.on("connect" , function(socket){
 	});
 
 });
-
-function create_new_user(socket ,userName){
-	socket_connections.push(socket);
-	socket.userName = userName;
-	users.push(userName);
-	io.sockets.emit("update_users_online_list",users);
-}
-
 function validate_image_file(image){
 	var hex_accepted = ['ffd8ffe0' , "47494638" , "89504e47"]
 	var hex_string = image.slice(0, 4).toString('hex');

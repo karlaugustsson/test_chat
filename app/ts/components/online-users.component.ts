@@ -15,6 +15,6 @@ export class OnlineUsersComponent implements OnInit{
 
 	}
 	get_all_users(){
-		this._UserService.get_all_users().then(users => this.users = users);
+		this._UserService.get_all_users().subscribe(users => this.users = users);
 	}
 }

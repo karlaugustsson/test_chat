@@ -9,6 +9,7 @@ export class ErrorService {
 
 	ErrorSubject$ = this.ErrorSubjectSource$.asObservable();
 	ErrorClearSubject$ = this.ErrorClearSource$.asObservable();
+	
 	new_error(val) {
 		this.ErrorSubjectSource$.next(val);
 	}

@@ -9,18 +9,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var server_service_1 = require("./server.service");
-var io = require('socket.io-client');
-var SocketService = (function () {
-    function SocketService(_server) {
-        this._server = _server;
-        this.socket = io(this._server.get_host() + ":" + this._server.get_port()).connect();
+var login_service_1 = require("../services/login.service");
+var ChatService = (function () {
+    function ChatService(_loginService) {
+        this._loginService = _loginService;
     }
-    SocketService = __decorate([
+    ChatService.prototype.isOnline = function () {
+        console.log(this._loginService.isLoggedIn());
+        if (this._loginService.isLoggedIn()) {
+            return true;
+        }
+        return false;
+    };
+    ChatService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [server_service_1.ServerService])
-    ], SocketService);
-    return SocketService;
+        __metadata('design:paramtypes', [login_service_1.LoginService])
+    ], ChatService);
+    return ChatService;
 }());
-exports.SocketService = SocketService;
-//# sourceMappingURL=socket.js.map
+exports.ChatService = ChatService;
+//# sourceMappingURL=chat.service.js.map

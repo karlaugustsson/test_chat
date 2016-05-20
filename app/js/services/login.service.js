@@ -9,18 +9,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var server_service_1 = require("./server.service");
-var io = require('socket.io-client');
-var SocketService = (function () {
-    function SocketService(_server) {
-        this._server = _server;
-        this.socket = io(this._server.get_host() + ":" + this._server.get_port()).connect();
+var LoginService = (function () {
+    function LoginService() {
+        this.LoggedIn = false;
     }
-    SocketService = __decorate([
+    LoginService.prototype.set_login = function () {
+        this.LoggedIn = true;
+    };
+    LoginService.prototype.isLoggedIn = function () {
+        return this.LoggedIn;
+    };
+    LoginService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [server_service_1.ServerService])
-    ], SocketService);
-    return SocketService;
+        __metadata('design:paramtypes', [])
+    ], LoginService);
+    return LoginService;
 }());
-exports.SocketService = SocketService;
-//# sourceMappingURL=socket.js.map
+exports.LoginService = LoginService;
+//# sourceMappingURL=login.service.js.map
