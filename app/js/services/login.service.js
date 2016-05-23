@@ -9,12 +9,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
+require('rxjs/add/operator/share');
 var LoginService = (function () {
     function LoginService() {
+        this.userName = "";
         this.LoggedIn = false;
     }
-    LoginService.prototype.set_login = function () {
+    LoginService.prototype.set_login = function (username) {
+        this.userName = username;
         this.LoggedIn = true;
+    };
+    LoginService.prototype.get_logged_in_user = function () {
+        return this.userName;
     };
     LoginService.prototype.isLoggedIn = function () {
         return this.LoggedIn;

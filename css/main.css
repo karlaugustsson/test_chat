@@ -32,7 +32,7 @@
 		padding-right: 5px;
 
 	}
-	span.user.me::before{
+	span.user.active::before{
 		color:darkgreen;
 	}
 	span.whisper{

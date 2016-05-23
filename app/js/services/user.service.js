@@ -11,24 +11,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var Observable_1 = require('rxjs/Observable');
 var socket_service_1 = require("../services/socket.service");
+var login_service_1 = require("../services/login.service");
 var UserService = (function () {
-    function UserService(_socketService) {
+    function UserService(_socketService, _LoginService) {
         var _this = this;
         this._socketService = _socketService;
-        this.users = [];
+        this._LoginService = _LoginService;
         this.observable$ = new Observable_1.Observable(function (observer) { return _this._UserObserver = observer; });
-        this.observable$.subscribe(function (data) {
-            console.log(data);
-            _this.users = data;
+        this.observable$.subscribe(function (users) {
+            _this.users = users;
+            _this.process_users(_this.users);
         });
-        this._socketService.get_socket_connection().then(function (socket) {
-            _this._socket = socket;
-            _this._socket.emit("request_users", function (data) {
-                _this._UserObserver.next(data);
-            });
-            _this._socket.on("get_users", function (data) {
-                _this._UserObserver.next(data);
-            });
+        this._socket = this._socketService.get_socket_connection();
+        this._socket.emit("request_users", function (users) {
+            _this.process_users(users);
+            _this._UserObserver.next(_this.users);
+        });
+        this._socket.on("get_users", function (users) {
+            _this.process_users(users);
+            _this._UserObserver.next(_this.users);
+        });
+        this._socket.on("disconnect", function () {
+            alert("conenction over");
         });
     }
     UserService.prototype.get_all_users = function () {
@@ -36,6 +40,16 @@ var UserService = (function () {
     };
     UserService.prototype.add_new_user = function (username) {
         this._socket.emit("create_new_user", username);
+    };
+    UserService.prototype.process_users = function (users) {
+        var online_user = this._LoginService.get_logged_in_user();
+        users.map(function (user) {
+            if (online_user && user.UserName == online_user) {
+                user.online = true;
+            }
+            return user;
+        });
+        this.users = users;
     };
     UserService.prototype.user_exists = function (username) {
         var found = this.users.filter(function (user) {
@@ -51,7 +65,7 @@ var UserService = (function () {
     };
     UserService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [socket_service_1.SocketService])
+        __metadata('design:paramtypes', [socket_service_1.SocketService, login_service_1.LoginService])
     ], UserService);
     return UserService;
 }());

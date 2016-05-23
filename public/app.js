@@ -47,7 +47,7 @@ io.sockets.on("connect" , function(socket){
 			console.log("yeah so " + socket.userName + " had to leave , we will miss that person forever ")
 
 	
-		io.sockets.emit("update_users_online_list",users);
+		io.sockets.emit("get_users",users);
 
 	});
 	socket.on("request_users",function(callback){
@@ -61,9 +61,6 @@ io.sockets.on("connect" , function(socket){
 	})
 	socket.on("send_message",function(data,callback){
 	
-
-
-		socket.emit("clear_inputs");
 		if(data.message !== false){
 			message = data.message.toString().trim();
 		}else{
@@ -117,9 +114,10 @@ io.sockets.on("connect" , function(socket){
 
 
 		}else{
-		
+			console.log("her we go again");
 			data.message = message;
-			data.userName = socket.userName;		
+			data.userName = socket.userName;
+			console.log(users);
 			io.sockets.emit("update_chat_box",data);			
 		}
 	});

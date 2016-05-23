@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var ServerService = (function () {
     function ServerService() {
-        this.host = window.location.host;
-        this.port = 3000;
+        this.host = "http://localhost";
+        this.port = 4000;
     }
     ServerService.prototype.get_host = function () {
         return this.host;

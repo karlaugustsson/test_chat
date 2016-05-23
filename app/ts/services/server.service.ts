@@ -3,8 +3,8 @@ import {Injectable} from "@angular/core";
 @Injectable()
 
 export class ServerService{
-	host: string = window.location.host;
-	port: number = 3000;
+	host: string = "http://localhost";
+	port: number = 4000;
 
 	get_host(){
 		return this.host;

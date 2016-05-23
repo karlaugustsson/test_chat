@@ -22,7 +22,7 @@ var AppComponent = (function () {
         core_1.Component({
             selector: "my-app",
             template: "<header></header><main></main><footer></footer>",
-            directives: [header_component_1.HeaderComponent, main_component_1.MainComponent, footer_component_1.FooterComponent],
+            directives: [router_1.ROUTER_DIRECTIVES, header_component_1.HeaderComponent, main_component_1.MainComponent, footer_component_1.FooterComponent],
         }),
         router_1.Routes([
             { path: '/login', component: login_component_1.LoginComponent },

@@ -5,7 +5,8 @@
 	<div class="row">
 		<div id="usersOnlineBox">
 
-			<span *ngFor="let user of users" class="user">{{user.UserName}}</span>
+			<span *ngFor="let user of users" 
+			  class="user" [ngClass]="{active:user.online}">{{user.UserName}}</span>
 		</div>
 	</div>			
 </div>

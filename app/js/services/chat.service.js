@@ -10,20 +10,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var login_service_1 = require("../services/login.service");
+var socket_service_1 = require("../services/socket.service");
 var ChatService = (function () {
-    function ChatService(_loginService) {
+    function ChatService(_loginService, _socketService) {
         this._loginService = _loginService;
+        this._socketService = _socketService;
+        this._socket = this._socketService.get_socket_connection();
     }
-    ChatService.prototype.isOnline = function () {
-        console.log(this._loginService.isLoggedIn());
-        if (this._loginService.isLoggedIn()) {
-            return true;
-        }
-        return false;
+    ChatService.prototype.update_chat_box = function (user, message) {
+        var data = { message: message };
+        this._socket.emit("send_message", data);
     };
     ChatService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [login_service_1.LoginService])
+        __metadata('design:paramtypes', [login_service_1.LoginService, socket_service_1.SocketService])
     ], ChatService);
     return ChatService;
 }());

@@ -12,19 +12,16 @@ var core_1 = require("@angular/core");
 var error_component_1 = require("./error.component");
 var error_service_1 = require("../services/error.service");
 var router_1 = require('@angular/router');
-var socket_service_1 = require("../services/socket.service");
 var MainComponent = (function () {
     function MainComponent(router) {
         this.router = router;
     }
-    MainComponent.prototype.ngOnInit = function () {
-    };
     MainComponent = __decorate([
         core_1.Component({
             selector: "main",
             templateUrl: "app/html/main.component.html",
             directives: [error_component_1.ErrorComponent, router_1.ROUTER_DIRECTIVES],
-            providers: [error_service_1.ErrorService, socket_service_1.SocketService],
+            providers: [error_service_1.ErrorService],
         }), 
         __metadata('design:paramtypes', [router_1.Router])
     ], MainComponent);

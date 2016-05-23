@@ -12,7 +12,6 @@ var core_1 = require("@angular/core");
 var error_service_1 = require("../services/error.service");
 var user_service_1 = require("../services/user.service");
 var router_1 = require('@angular/router');
-var socket_service_1 = require("../services/socket.service");
 var login_service_1 = require("../services/login.service");
 var LoginComponent = (function () {
     function LoginComponent(_loginService, _ErrorService, _UserService, router) {
@@ -33,9 +32,8 @@ var LoginComponent = (function () {
             }
             this._ErrorService.clear_errors();
             this._UserService.add_new_user(this.username);
+            this._loginService.set_login(this.username);
             this.username = "";
-            this._loginService.set_login();
-            console.log(this._loginService.isLoggedIn());
             this.router.navigate(['/chattie']);
         }
     };
@@ -52,15 +50,12 @@ var LoginComponent = (function () {
         }
         return true;
     };
-    LoginComponent.prototype.register_username = function (username) {
-        this.username = username;
-    };
     LoginComponent = __decorate([
         core_1.Component({
             selector: "login",
             templateUrl: "app/html/login.component.html",
             directives: [router_1.ROUTER_DIRECTIVES],
-            providers: [user_service_1.UserService, socket_service_1.SocketService],
+            providers: [user_service_1.UserService],
         }), 
         __metadata('design:paramtypes', [login_service_1.LoginService, error_service_1.ErrorService, user_service_1.UserService, router_1.Router])
     ], LoginComponent);

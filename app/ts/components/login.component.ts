@@ -9,7 +9,7 @@ import { LoginService } from "../services/login.service";
 	selector: "login",
 	templateUrl: "app/html/login.component.html",
 	directives:[ROUTER_DIRECTIVES],
-	providers: [UserService , SocketService ],
+	providers: [UserService],
 
 })
 
@@ -33,9 +33,9 @@ export class LoginComponent{
 			}
 			this._ErrorService.clear_errors();
 			this._UserService.add_new_user(this.username);
+			this._loginService.set_login(this.username);
 			this.username = "";
-			this._loginService.set_login();
-			console.log(this._loginService.isLoggedIn());
+
 			this.router.navigate(['/chattie']);
 		}
 
@@ -59,10 +59,5 @@ export class LoginComponent{
 		return true;
 	}
 
-	register_username(username) {
-		this.username = username;
-
-
-	}
 
 }
