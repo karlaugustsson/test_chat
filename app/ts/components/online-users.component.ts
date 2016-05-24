@@ -4,7 +4,6 @@ import { UserService } from "../services/user.service";
 @Component({
 	selector:"online-users",
 	templateUrl:"app/html/online-users.component.html",
-	providers:[UserService]
 })
 
 export class OnlineUsersComponent implements OnInit{
@@ -25,6 +24,6 @@ export class OnlineUsersComponent implements OnInit{
 
 	get_all_users() {
 
-		this._UserService.get_all_users().subscribe(users => this.users = users);
+		this._UserService.get_all_users().subscribe((users) => {this.users = users;console.log(this.users)});
 	}
 }

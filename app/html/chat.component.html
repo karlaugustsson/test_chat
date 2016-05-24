@@ -9,17 +9,18 @@
 						</div>
 						<div class="row">
 						
-						<form class="form-inline" id="chatForm" enctype="multipart/form-data" (submit)="new_chat_message($event)">
+		<!-- 				<form class="form-inline" id="chatForm" enctype="multipart/form-data" #messageForm="ngForm" > -->
 						<div class="form-group">
 		
-						<input id="chatField" name="name"type="text" class="form-control" placeholder="chat please" [(ngModel)]="chat_field_value">	
-						<input type="submit" class="btn btn-primary" value="send">
+						<input id="chatField" type="text" class="form-control" placeholder="chat please"  [(ngModel)]="message" (keyup.enter)="onSubmit()">
+									<button type="submit" class="btn btn-primary" (click)="onSubmit()">send</button>	
+				
 
 						<input id="upload-image" type="file" style="display:none;" name="file_upload" accept="image/*">
 						<button id="imageButton" class="btn btn-primary image upload" (click)="imageInput.click()"></button>
 						  </div>
 
-						</form>						
+				<!-- 		</form>	 -->					
 					
 
 

@@ -19,13 +19,12 @@ var OnlineUsersComponent = (function () {
     };
     OnlineUsersComponent.prototype.get_all_users = function () {
         var _this = this;
-        this._UserService.get_all_users().subscribe(function (users) { return _this.users = users; });
+        this._UserService.get_all_users().subscribe(function (users) { _this.users = users; console.log(_this.users); });
     };
     OnlineUsersComponent = __decorate([
         core_1.Component({
             selector: "online-users",
             templateUrl: "app/html/online-users.component.html",
-            providers: [user_service_1.UserService]
         }), 
         __metadata('design:paramtypes', [user_service_1.UserService])
     ], OnlineUsersComponent);

@@ -1,11 +1,22 @@
 		<div class="row">
 		<div id="username_container" class="col-xs-12">
-			<form class="form-inline" id="nameForm" (submit)="attemptLogin($event)" >
+			<form class="form-inline" (ngSubmit)="onSubmit()" #userForm="ngForm">
+		
 			  <div class="form-group">
 			    <label for="name">Name:</label>
-					<input id="nameField" name="name" type="text" class="form-control" placeholder="Enter a username" [(ngModel)]="username">	
+				<input id="nameField" type="text" class="form-control" placeholder="Enter a username" [(ngModel)]="user.UserName" required pattern="[A-Za-z0-9_-]{3,20}"
+					ngControl="name"  #name="ngForm" >	
 			  </div>
-			<input  type="submit" class="btn btn-success" placeholder="enter a name please">
+            
+        <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+          3,20 characters please
+        </div>
+        <div [hidden]="!user_exist" class="alert alert-danger">
+          that user exist pick another
+        </div>
+
+			<button type="submit" class="btn btn-success">Enter a Username</button>
 			</form>		
 		</div>
+		<div [hidden]="!submitted" class="col-xs-12">Entering chattie</div>
 		</div>

@@ -9,55 +9,44 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var error_service_1 = require("../services/error.service");
-var user_service_1 = require("../services/user.service");
+var user_1 = require("../classes/user");
 var router_1 = require('@angular/router');
 var login_service_1 = require("../services/login.service");
+var user_service_1 = require("../services/user.service");
 var LoginComponent = (function () {
-    function LoginComponent(_loginService, _ErrorService, _UserService, router) {
+    function LoginComponent(_loginService, _router, _UserService) {
         this._loginService = _loginService;
-        this._ErrorService = _ErrorService;
+        this._router = _router;
         this._UserService = _UserService;
-        this.router = router;
-        this.username = "";
+        this.user = new user_1.User("");
+        this.submitted = false;
+        this.valid = false;
+        this.user_exist = false;
     }
-    LoginComponent.prototype.attemptLogin = function (event) {
-        event.preventDefault();
-        if (this._UserService.user_exists(this.username)) {
-            return this.new_error("a user already has that name choose another name");
+    LoginComponent.prototype.onSubmit = function () {
+        this.user_exists();
+        if (this.valid == true) {
+            this.submitted = true;
+            this._loginService.set_login(this.user.UserName);
+            this._UserService.add_new_user(this.user.UserName);
+            this._router.navigate(["/chattie"]);
+        }
+    };
+    LoginComponent.prototype.user_exists = function () {
+        if (!this._UserService.user_exists(this.user.UserName)) {
+            this.valid = true;
         }
         else {
-            if (!this.username_ok()) {
-                return this.new_error("Please no spaces and shit and also username must be more than 3 charcaters long");
-            }
-            this._ErrorService.clear_errors();
-            this._UserService.add_new_user(this.username);
-            this._loginService.set_login(this.username);
-            this.username = "";
-            this.router.navigate(['/chattie']);
+            this.user_exist = true;
         }
-    };
-    LoginComponent.prototype.new_error = function (message) {
-        this._ErrorService.clear_errors();
-        this._ErrorService.new_error(message);
-    };
-    LoginComponent.prototype.username_ok = function () {
-        if (this.username.length < 3) {
-            return false;
-        }
-        if (this.username.match(/[\s]/) != null) {
-            return false;
-        }
-        return true;
     };
     LoginComponent = __decorate([
         core_1.Component({
             selector: "login",
             templateUrl: "app/html/login.component.html",
-            directives: [router_1.ROUTER_DIRECTIVES],
-            providers: [user_service_1.UserService],
+            directives: [router_1.ROUTER_DIRECTIVES]
         }), 
-        __metadata('design:paramtypes', [login_service_1.LoginService, error_service_1.ErrorService, user_service_1.UserService, router_1.Router])
+        __metadata('design:paramtypes', [login_service_1.LoginService, router_1.Router, user_service_1.UserService])
     ], LoginComponent);
     return LoginComponent;
 }());

@@ -12,9 +12,10 @@ import { LoginService} from "../services/login.service";
 })
 
 export class ChatComponent implements OnInit{
-	chat_field_value:string = "";
+	message:string = "";
 	chat_box_items: Array<any> = [];
 	OnlineUser:string;
+	user_exist = true;
 
 	ngOnInit(){
 		this.isOnline();
@@ -30,15 +31,19 @@ export class ChatComponent implements OnInit{
 	}
 	constructor(private _chatservice:ChatService ,private router:Router,private _LoginService:LoginService){}
 	
-	new_chat_message(event){
-		event.preventDefault();
+	onSubmit(){
+	
 		this.add_to_chat_items();
-		this.chat_field_value = "";
+		this.send_message();
+		this.message = "";
+
 
 	}
 
 	add_to_chat_items(){
-		this.chat_box_items.push({ username: this.OnlineUser, message:this.chat_field_value , image:null});
-		this._chatservice.update_chat_box(this.OnlineUser, this.chat_field_value);
+		this.chat_box_items.push({ username: this.OnlineUser, message:this.message , image:null});
+	}
+	send_message(){
+		this._chatservice.update_chat_box(this.OnlineUser, this.message);
 	}
 }

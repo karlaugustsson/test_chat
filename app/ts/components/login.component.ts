@@ -1,63 +1,44 @@
 import {Component , Input , Output , EventEmitter , OnInit} from "@angular/core";
-import { ErrorService } from "../services/error.service";
-import { UserService} from "../services/user.service";
 import {User} from "../classes/user";
 import { Routes, ROUTER_DIRECTIVES,Router } from '@angular/router';
-import {SocketService } from "../services/socket.service";
 import { LoginService } from "../services/login.service";
+import { UserService } from "../services/user.service";
+
 @Component({
 	selector: "login",
 	templateUrl: "app/html/login.component.html",
-	directives:[ROUTER_DIRECTIVES],
-	providers: [UserService],
+	directives:[ROUTER_DIRECTIVES]
 
 })
 
 export class LoginComponent{
 
-	username:string="";
+	user = new User("");
+	submitted = false;
+	valid:boolean = false;
+	user_exist:boolean = false;
 
-	constructor(private _loginService:LoginService, private _ErrorService: ErrorService, private _UserService: UserService, private router: Router ) {
+	onSubmit(){
+		this.user_exists();
+		if(this.valid == true){
+			this.submitted = true;
+			this._loginService.set_login(this.user.UserName);
+			this._UserService.add_new_user(this.user.UserName)
+			this._router.navigate(["/chattie"]);	
+		}
+
 	}
 
-	attemptLogin(event) {
+	user_exists(){
 
-		event.preventDefault();
-
-		if(this._UserService.user_exists(this.username)){
-			return this.new_error("a user already has that name choose another name")
+		if (!this._UserService.user_exists(this.user.UserName ) ){
+			this.valid = true;
 		}else{
-
-			if(!this.username_ok()){
-				return this.new_error("Please no spaces and shit and also username must be more than 3 charcaters long")
-			}
-			this._ErrorService.clear_errors();
-			this._UserService.add_new_user(this.username);
-			this._loginService.set_login(this.username);
-			this.username = "";
-
-			this.router.navigate(['/chattie']);
+			this.user_exist = true;
 		}
-
-
-
 	}
 
-	new_error(message: string) {
-		this._ErrorService.clear_errors();
-		this._ErrorService.new_error(message);
+	constructor(private _loginService:LoginService, private _router: Router , private _UserService:UserService ) {
 	}
-
-
-	username_ok(){
-		if(this.username.length < 3){
-			return false;
-		}
-		if (this.username.match(/[\s]/) != null){
-			return false;
-		}
-		return true;
-	}
-
 
 }

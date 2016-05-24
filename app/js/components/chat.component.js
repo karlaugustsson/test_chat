@@ -18,8 +18,9 @@ var ChatComponent = (function () {
         this._chatservice = _chatservice;
         this.router = router;
         this._LoginService = _LoginService;
-        this.chat_field_value = "";
+        this.message = "";
         this.chat_box_items = [];
+        this.user_exist = true;
     }
     ChatComponent.prototype.ngOnInit = function () {
         this.isOnline();
@@ -32,14 +33,16 @@ var ChatComponent = (function () {
             this.OnlineUser = this._LoginService.get_logged_in_user();
         }
     };
-    ChatComponent.prototype.new_chat_message = function (event) {
-        event.preventDefault();
+    ChatComponent.prototype.onSubmit = function () {
         this.add_to_chat_items();
-        this.chat_field_value = "";
+        this.send_message();
+        this.message = "";
     };
     ChatComponent.prototype.add_to_chat_items = function () {
-        this.chat_box_items.push({ username: this.OnlineUser, message: this.chat_field_value, image: null });
-        this._chatservice.update_chat_box(this.OnlineUser, this.chat_field_value);
+        this.chat_box_items.push({ username: this.OnlineUser, message: this.message, image: null });
+    };
+    ChatComponent.prototype.send_message = function () {
+        this._chatservice.update_chat_box(this.OnlineUser, this.message);
     };
     ChatComponent = __decorate([
         core_1.Component({
