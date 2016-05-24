@@ -21,6 +21,8 @@ var ChatComponent = (function () {
         this.message = "";
         this.chat_box_items = [];
         this.user_exist = true;
+        this.error_message = "";
+        this.whisper = false;
     }
     ChatComponent.prototype.ngOnInit = function () {
         this.isOnline();
@@ -36,15 +38,26 @@ var ChatComponent = (function () {
     };
     ChatComponent.prototype.chat_subscribe = function () {
         var _this = this;
-        this._chatservice.get_chat_stream().subscribe(function (data) { _this.add_to_chat_items(data.userName, data.message); });
+        this._chatservice.get_chat_stream().subscribe(function (data) { _this.process_chat_data(data); });
     };
     ChatComponent.prototype.onSubmit = function () {
-        this.add_to_chat_items(this.OnlineUser, this.message);
+        this.whisper = (this.message.substring(0, 3) == "/w ") ? true : false;
+        this.add_to_chat_items((this.whisper == true) ? "You " : this.OnlineUser, (this.whisper == true) ? this.message.substring(3, this.message.length) : this.message, this.image || null, this.whisper);
         this.send_message();
         this.message = "";
     };
-    ChatComponent.prototype.add_to_chat_items = function (user, message) {
-        this.chat_box_items.push({ username: user, message: message, image: null });
+    ChatComponent.prototype.process_chat_data = function (data) {
+        console.log(data);
+        if (typeof data == "string") {
+            this.error_message = data;
+        }
+        else {
+            this.error_message = "";
+            this.add_to_chat_items(data.userName, data.message, data.image || null, data.whisper || null);
+        }
+    };
+    ChatComponent.prototype.add_to_chat_items = function (user, message, image, whisper) {
+        this.chat_box_items.push({ username: user, message: message, image: image || null, whisper: whisper || null });
     };
     ChatComponent.prototype.send_message = function () {
         this._chatservice.update_chat_box(this.OnlineUser, this.message);

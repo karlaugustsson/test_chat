@@ -27,8 +27,11 @@ var ChatService = (function () {
         });
     }
     ChatService.prototype.update_chat_box = function (user, message) {
+        var _this = this;
         var data = { message: message };
-        this._socket.emit("send_message", data);
+        this._socket.emit("send_message", data, function (data) {
+            _this.message_data.next(data);
+        });
     };
     ChatService.prototype.get_chat_stream = function () {
         return this._chatObservable$;

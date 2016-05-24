@@ -28,7 +28,9 @@ export class ChatService {
 
 	update_chat_box(user,message){
 		let data = { message:message}
-		this._socket.emit("send_message", data);
+		this._socket.emit("send_message", data,(data) => {
+			this.message_data.next(data)
+		});
 
 	}
 	get_chat_stream(){

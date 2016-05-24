@@ -1,10 +1,16 @@
 <div id="message_container" class="col-xs-12 col-md-4">
 						<div class="row">
 							<div id="num_users_online">
-				
+								
 							</div>
+			<div [hidden]="error_message == ''" class="alert alert-danger">
+          {{error_message}}
+        </div>
 							<div id="chatBox">
-								<p *ngFor="let chat_item of chat_box_items">{{chat_item.username}}:{{chat_item.message}}</p>
+								<p *ngFor="let chat_item of chat_box_items">
+								<span *ngIf="chat_item.whisper" class="whisper">{{chat_item.username}} whispered</span>
+								<span *ngIf="!chat_item.whisper">{{chat_item.username}}</span>
+								:{{chat_item.message}}</p>
 							</div>
 						</div>
 						<div class="row">
@@ -19,6 +25,7 @@
 
 						<input id="upload-image" type="file" style="display:none;" name="file_upload" accept="image/*">
 						<button id="imageButton" class="btn btn-primary image upload" (click)="imageInput.click()"></button>
+						{{whisper}}
 						  </div>
 		</div>
 				<!-- 		</form>	 -->					

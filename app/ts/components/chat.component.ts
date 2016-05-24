@@ -15,6 +15,9 @@ export class ChatComponent implements OnInit{
 	chat_box_items: Array<any> = [];
 	OnlineUser:string;
 	user_exist = true;
+	error_message:string="";
+	whisper:boolean = false;
+	image;
 
 	ngOnInit(){
 		this.isOnline();
@@ -33,19 +36,28 @@ export class ChatComponent implements OnInit{
 	constructor(private _chatservice:ChatService ,private router:Router,private _LoginService:LoginService){}
 	
 	chat_subscribe(){
-		this._chatservice.get_chat_stream().subscribe((data) => {this.add_to_chat_items(data.userName,data.message);})
+		this._chatservice.get_chat_stream().subscribe((data) => {this.process_chat_data(data)})
 	}
 	onSubmit(){
-	
-		this.add_to_chat_items(this.OnlineUser,this.message);
+		this.whisper = (this.message.substring(0,3) == "/w ")?true:false;
+		
+		this.add_to_chat_items((this.whisper == true)?"You ":this.OnlineUser,(this.whisper == true)?this.message.substring(3,this.message.length):this.message,this.image || null , this.whisper );
 		this.send_message();
 		this.message = "";
 
 
 	}
-
-	add_to_chat_items(user,message){
-		this.chat_box_items.push({ username:user , message:message , image:null});
+	process_chat_data(data){
+		console.log(data);
+		if(typeof data == "string"){
+			this.error_message = data;
+		}else{
+			this.error_message = "";
+			this.add_to_chat_items(data.userName,data.message,data.image||null,data.whisper|| null)
+		}
+	}
+	add_to_chat_items(user,message,image ,whisper ){
+		this.chat_box_items.push({ username:user , message:message , image:image||null,whisper:whisper||null});
 	}
 	send_message(){
 		this._chatservice.update_chat_box(this.OnlineUser, this.message);

@@ -43,7 +43,7 @@ io.sockets.on("connect" , function(socket){
 					return user;
 				}
 			});
-
+			socket_connections.splice(socket,1);
 			console.log("yeah so " + socket.userName + " had to leave , we will miss that person forever ")
 
 	
@@ -57,6 +57,7 @@ io.sockets.on("connect" , function(socket){
 		console.log("new user was created " + username)
 		users.push({UserName:username});
 		socket.userName = username;
+		socket_connections.push(socket)
 		io.sockets.emit("get_users",users)
 	})
 	socket.on("send_message",function(data,callback){
@@ -78,27 +79,31 @@ io.sockets.on("connect" , function(socket){
 			message = remove_whisper_prefix(message);
 		
 			var searchUsername = find_whisper_username(message);
-			
-			if ( typeof searchUsername === 'number' ){
-				
+			if(typeof searchUsername == "object"){
 				var soc = socket_connections.find(function(socket){
 				
-				if(socket.userName == users[searchUsername]){
+				if(socket.userName == searchUsername.UserName){
 						return socket;
 				}
 
-				});
+				});			
 			}
+			
+		
+
+			
 	
 			if ( soc !== undefined ){
 
 
-				data.message = message.substring(users[searchUsername].length,message.length);
+				data.message = message.substring(searchUsername.UserName.length,message.length);
 				data.userName = socket.userName;
 				data.whisper = true;
-
+				
 				soc.emit("update_chat_box",data);
 				
+				}else{
+					callback("server errors you whisper did not make it through");
 				}
 
 
@@ -114,7 +119,6 @@ io.sockets.on("connect" , function(socket){
 
 
 		}else{
-			console.log("her we go again");
 			data.message = message;
 			data.userName = socket.userName;
 		
@@ -146,8 +150,11 @@ function find_whisper_username(message){
 		var searchUsername = message.substring(0,endOfUsernameIndex);
 		
 
-		found_user = users.indexOf(searchUsername);
-		
+		found_user = users.find(function(user){
+			if(user.UserName == searchUsername){
+				return user;
+			}
+		})
 		if ( found_user != -1 ){
 				
 		return found_user ;
