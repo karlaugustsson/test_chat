@@ -24,6 +24,7 @@ var ChatComponent = (function () {
     }
     ChatComponent.prototype.ngOnInit = function () {
         this.isOnline();
+        this.chat_subscribe();
     };
     ChatComponent.prototype.isOnline = function () {
         if (this._LoginService.isLoggedIn() == false) {
@@ -33,13 +34,17 @@ var ChatComponent = (function () {
             this.OnlineUser = this._LoginService.get_logged_in_user();
         }
     };
+    ChatComponent.prototype.chat_subscribe = function () {
+        var _this = this;
+        this._chatservice.get_chat_stream().subscribe(function (data) { _this.add_to_chat_items(data.userName, data.message); });
+    };
     ChatComponent.prototype.onSubmit = function () {
-        this.add_to_chat_items();
+        this.add_to_chat_items(this.OnlineUser, this.message);
         this.send_message();
         this.message = "";
     };
-    ChatComponent.prototype.add_to_chat_items = function () {
-        this.chat_box_items.push({ username: this.OnlineUser, message: this.message, image: null });
+    ChatComponent.prototype.add_to_chat_items = function (user, message) {
+        this.chat_box_items.push({ username: user, message: message, image: null });
     };
     ChatComponent.prototype.send_message = function () {
         this._chatservice.update_chat_box(this.OnlineUser, this.message);
@@ -48,8 +53,7 @@ var ChatComponent = (function () {
         core_1.Component({
             selector: "chat",
             templateUrl: "app/html/chat.component.html",
-            directives: [online_users_component_1.OnlineUsersComponent],
-            providers: [chat_service_1.ChatService]
+            directives: [online_users_component_1.OnlineUsersComponent]
         }), 
         __metadata('design:paramtypes', [chat_service_1.ChatService, router_1.Router, login_service_1.LoginService])
     ], ChatComponent);

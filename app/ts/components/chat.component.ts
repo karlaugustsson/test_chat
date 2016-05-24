@@ -7,8 +7,7 @@ import { LoginService} from "../services/login.service";
 @Component({
 	selector: "chat",
 	templateUrl:"app/html/chat.component.html",
-	directives: [OnlineUsersComponent],
-	providers: [ChatService]
+	directives: [OnlineUsersComponent]
 })
 
 export class ChatComponent implements OnInit{
@@ -19,7 +18,9 @@ export class ChatComponent implements OnInit{
 
 	ngOnInit(){
 		this.isOnline();
+		this.chat_subscribe();
 	}
+
 	isOnline(){
 		if (this._LoginService.isLoggedIn() == false){
 			
@@ -31,17 +32,20 @@ export class ChatComponent implements OnInit{
 	}
 	constructor(private _chatservice:ChatService ,private router:Router,private _LoginService:LoginService){}
 	
+	chat_subscribe(){
+		this._chatservice.get_chat_stream().subscribe((data) => {this.add_to_chat_items(data.userName,data.message);})
+	}
 	onSubmit(){
 	
-		this.add_to_chat_items();
+		this.add_to_chat_items(this.OnlineUser,this.message);
 		this.send_message();
 		this.message = "";
 
 
 	}
 
-	add_to_chat_items(){
-		this.chat_box_items.push({ username: this.OnlineUser, message:this.message , image:null});
+	add_to_chat_items(user,message){
+		this.chat_box_items.push({ username:user , message:message , image:null});
 	}
 	send_message(){
 		this._chatservice.update_chat_box(this.OnlineUser, this.message);

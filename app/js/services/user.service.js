@@ -17,39 +17,42 @@ var UserService = (function () {
         var _this = this;
         this._socketService = _socketService;
         this._LoginService = _LoginService;
+        this.users = [];
         this.observable$ = new Observable_1.Observable(function (observer) { return _this._UserObserver = observer; });
         this.observable$.subscribe(function (users) {
             _this.users = users;
-            _this.process_users(_this.users);
         });
         this._socket = this._socketService.get_socket_connection();
         this._socket.emit("request_users", function (users) {
-            _this.process_users(users);
-            _this._UserObserver.next(_this.users);
+            _this._UserObserver.next(users);
         });
         this._socket.on("get_users", function (users) {
-            _this.process_users(users);
-            _this._UserObserver.next(_this.users);
+            console.log("new users");
+            _this._UserObserver.next(users);
         });
         this._socket.on("disconnect", function () {
             alert("conenction over");
         });
     }
     UserService.prototype.get_all_users = function () {
+        this._UserObserver.next(this.users);
+    };
+    UserService.prototype.get_users_per_subscription = function () {
         return this.observable$;
     };
     UserService.prototype.add_new_user = function (username) {
         this._socket.emit("create_new_user", username);
     };
     UserService.prototype.process_users = function (users) {
+        console.log("process");
         var online_user = this._LoginService.get_logged_in_user();
-        users.map(function (user) {
+        this.users = users.map(function (user) {
             if (online_user && user.UserName == online_user) {
                 user.online = true;
             }
             return user;
         });
-        this.users = users;
+        return this.users;
     };
     UserService.prototype.user_exists = function (username) {
         var found = this.users.filter(function (user) {

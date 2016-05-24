@@ -10,6 +10,7 @@
 						<div class="row">
 						
 		<!-- 				<form class="form-inline" id="chatForm" enctype="multipart/form-data" #messageForm="ngForm" > -->
+		<div id="chatForm">
 						<div class="form-group">
 		
 						<input id="chatField" type="text" class="form-control" placeholder="chat please"  [(ngModel)]="message" (keyup.enter)="onSubmit()">
@@ -19,7 +20,7 @@
 						<input id="upload-image" type="file" style="display:none;" name="file_upload" accept="image/*">
 						<button id="imageButton" class="btn btn-primary image upload" (click)="imageInput.click()"></button>
 						  </div>
-
+		</div>
 				<!-- 		</form>	 -->					
 					
 

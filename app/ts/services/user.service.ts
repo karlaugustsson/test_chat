@@ -7,7 +7,7 @@ import { LoginService } from "../services/login.service";
 
 export class UserService {
 	_socket;
-	users:User[];
+	users:User[] = [];
 	_UserObserver;
 	observable$;
 	
@@ -18,20 +18,18 @@ export class UserService {
 		this.observable$ = new Observable(observer => this._UserObserver = observer);
 			
 		this.observable$.subscribe((users) => {
-			this.users = users;
-			this.process_users(this.users)
+			this.users = users
 		});
 
 		this._socket = this._socketService.get_socket_connection();
 
 		this._socket.emit("request_users", (users) => {
-			this.process_users(users)
-			this._UserObserver.next(this.users);
+			this._UserObserver.next(users);
 		});
 
 		this._socket.on("get_users", (users) => {
-			this.process_users(users)
-			this._UserObserver.next(this.users);
+			console.log("new users")
+			this._UserObserver.next(users);
 		});
 
 		this._socket.on("disconnect", function() {
@@ -40,8 +38,10 @@ export class UserService {
 
 	}
 
-
-	get_all_users() {
+	get_all_users(){
+		this._UserObserver.next(this.users);
+	}
+	get_users_per_subscription() {
 
 		return this.observable$;
 		
@@ -53,17 +53,20 @@ export class UserService {
 	}
 
 	process_users(users){
-		
+
+		console.log("process")
 		let online_user = this._LoginService.get_logged_in_user();
 
-		users.map((user) => {
-
+		this.users = users.map((user) => {
+		
 			if (online_user && user.UserName == online_user){
 				user.online = true;
 			}
 			return user;
 		})
-		this.users = users;
+
+		return this.users;
+
 	}
 
 	user_exists(username) {

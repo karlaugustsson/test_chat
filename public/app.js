@@ -117,8 +117,8 @@ io.sockets.on("connect" , function(socket){
 			console.log("her we go again");
 			data.message = message;
 			data.userName = socket.userName;
-			console.log(users);
-			io.sockets.emit("update_chat_box",data);			
+		
+			socket.broadcast.emit("update_chat_box",data);			
 		}
 	});
 

@@ -15,11 +15,15 @@ var OnlineUsersComponent = (function () {
         this._UserService = _UserService;
     }
     OnlineUsersComponent.prototype.ngOnInit = function () {
+        this.subscribe_for_users();
         this.get_all_users();
     };
     OnlineUsersComponent.prototype.get_all_users = function () {
+        this._UserService.get_all_users();
+    };
+    OnlineUsersComponent.prototype.subscribe_for_users = function () {
         var _this = this;
-        this._UserService.get_all_users().subscribe(function (users) { _this.users = users; console.log(_this.users); });
+        this._UserService.get_users_per_subscription().subscribe(function (users) { _this.users = _this._UserService.process_users(users); });
     };
     OnlineUsersComponent = __decorate([
         core_1.Component({
