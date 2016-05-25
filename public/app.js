@@ -68,10 +68,13 @@ io.sockets.on("connect" , function(socket){
 			message = data.message;
 		}
 		
+		if(data.file && validate_image_file(data.file) == true ){
+			
+			data.file = "data:" + data.fileType + ";base64," + new Buffer( data.file, 'binary' ).toString('base64');	
+			
+		}else{
 
-		if(data.file && validate_image_file(data.file.data) == true ){
-		
-			data.file.data = new Buffer(data.file.data, "binary").toString("base64").trim() ;	
+			data.file = null;
 		}
 		
 		if ( message != false && message_whisper(message) == true ){
@@ -99,11 +102,8 @@ io.sockets.on("connect" , function(socket){
 				data.message = message.substring(searchUsername.UserName.length,message.length);
 				data.userName = socket.userName;
 				data.whisper = true;
-				
 				soc.emit("update_chat_box",data);
 				
-				}else{
-					callback("server errors you whisper did not make it through");
 				}
 
 

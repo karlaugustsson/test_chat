@@ -32,10 +32,9 @@ var ErrorComponent = (function () {
             selector: "error",
             templateUrl: "app/html/error.component.html",
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof error_service_1.ErrorService !== 'undefined' && error_service_1.ErrorService) === 'function' && _a) || Object])
+        __metadata('design:paramtypes', [error_service_1.ErrorService])
     ], ErrorComponent);
     return ErrorComponent;
-    var _a;
 }());
 exports.ErrorComponent = ErrorComponent;
 //# sourceMappingURL=error.component.js.map

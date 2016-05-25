@@ -18,17 +18,17 @@ var ChatService = (function () {
         var _this = this;
         this._loginService = _loginService;
         this._socketService = _socketService;
-        this.data = [];
         this._chatObservable$ = new Observable_1.Observable(function (observer) { return _this.message_data = observer; });
-        this._chatObservable$.subscribe(function (data) { console.log("got that subsshit"); _this.data.push(data); });
+        this._chatObservable$.subscribe();
         this._socket = this._socketService.get_socket_connection();
         this._socket.on("update_chat_box", function (data) {
             _this.message_data.next(data);
         });
     }
-    ChatService.prototype.update_chat_box = function (user, message) {
+    ChatService.prototype.update_chat_box = function (message, image) {
         var _this = this;
-        var data = { message: message };
+        if (image === void 0) { image = null; }
+        var data = (image == null) ? { message: message } : { message: message, file: image, fileType: image.type };
         this._socket.emit("send_message", data, function (data) {
             _this.message_data.next(data);
         });

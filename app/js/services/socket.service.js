@@ -10,19 +10,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var server_service_1 = require("./server.service");
+var router_1 = require('@angular/router');
 var io = require('socket.io-client');
 var SocketService = (function () {
-    function SocketService(_serverService) {
+    function SocketService(_serverService, Router) {
         this._serverService = _serverService;
         this._socket = io(this._serverService.get_host() +
             ":" + this._serverService.get_port()).connect();
+        this._socket.on("disconnect", function () {
+            alert("conenction was broken all users have been dropped , once this dialog has been closed you will be promted to login again");
+            Router.navigate(["/login"]);
+        });
     }
     SocketService.prototype.get_socket_connection = function () {
         return this._socket;
     };
     SocketService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [server_service_1.ServerService])
+        __metadata('design:paramtypes', [server_service_1.ServerService, router_1.Router])
     ], SocketService);
     return SocketService;
 }());

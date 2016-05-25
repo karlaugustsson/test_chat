@@ -10,13 +10,13 @@ export class ChatService {
 	_socket;
 	_chatObservable$;
 	message_data;
-	data = [];
+	result;
 	
 	constructor(private _loginService:LoginService , private _socketService:SocketService){
 	
 		
 		this._chatObservable$ = new Observable(observer => this.message_data = observer);
-		this._chatObservable$.subscribe((data) => {console.log("got that subsshit");this.data.push(data)})
+		this._chatObservable$.subscribe();
 
 
 		this._socket = this._socketService.get_socket_connection();
@@ -26,8 +26,9 @@ export class ChatService {
 		});
 	}
 
-	update_chat_box(user,message){
-		let data = { message:message}
+	update_chat_box(message,image = null){
+
+		let data = (image == null) ? { message: message } : { message: message, file: image , fileType:image.type };
 		this._socket.emit("send_message", data,(data) => {
 			this.message_data.next(data)
 		});

@@ -17,6 +17,12 @@
 	.ng-valid[required] {
   border-left: 5px solid #42A948; /* green */
 }
+#chatItem img{
+	width:90%;
+	height:auto;
+	display: block;
+	margin:10px auto;
+}
 
 .ng-invalid {
   border-left: 5px solid #a94442; /* red */
@@ -53,6 +59,9 @@
 		content:"\e060";
 
 	}
+	#chatForm .btn{
+		width:15%;
+	}
 	button.image.upload.img_appended{
 		background-size: cover;
 		background-repeat: no-repeat;
@@ -65,13 +74,21 @@
 		height: auto;
 		display: none;
 	}
+	#chatField{
+		width: 65%;
+    	display: inline-block;
+	}
 	@media screen and (max-width: 992px) {
 		.form-group{
 			width:100%;
 		}
 		.form-inline .form-group > [type="text"] , .btn {
 			margin-bottom:20px;
-			width: 100%;
+			width: 100% !important;
+		}
+		#chatField{
+			width:100%;
+			margin-bottom: 5px;
 		}
 		#chatForm .btn{
 			margin-bottom: 5px;
@@ -81,6 +98,7 @@
 		content:"upload image";
 
 		}
+
 		#num_users_online{
 			width:100%;
 			height: auto;

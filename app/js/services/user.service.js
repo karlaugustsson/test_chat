@@ -27,14 +27,13 @@ var UserService = (function () {
             _this._UserObserver.next(users);
         });
         this._socket.on("get_users", function (users) {
-            console.log("new users");
             _this._UserObserver.next(users);
         });
-        this._socket.on("disconnect", function () {
-            alert("conenction over");
-        });
     }
-    UserService.prototype.get_all_users = function () {
+    UserService.prototype.get_user_count = function () {
+        return this.users.length;
+    };
+    UserService.prototype.request_all_users = function () {
         this._UserObserver.next(this.users);
     };
     UserService.prototype.get_users_per_subscription = function () {
@@ -44,7 +43,6 @@ var UserService = (function () {
         this._socket.emit("create_new_user", username);
     };
     UserService.prototype.process_users = function (users) {
-        console.log("process");
         var online_user = this._LoginService.get_logged_in_user();
         this.users = users.map(function (user) {
             if (online_user && user.UserName == online_user) {

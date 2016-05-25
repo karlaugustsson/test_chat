@@ -28,17 +28,16 @@ export class UserService {
 		});
 
 		this._socket.on("get_users", (users) => {
-			console.log("new users")
-			this._UserObserver.next(users);
-		});
 
-		this._socket.on("disconnect", function() {
-			alert("conenction over");
+			this._UserObserver.next(users);
 		});
 
 	}
 
-	get_all_users(){
+	get_user_count(){
+		return this.users.length;
+	}
+	request_all_users(){
 		this._UserObserver.next(this.users);
 	}
 	get_users_per_subscription() {
@@ -53,8 +52,7 @@ export class UserService {
 	}
 
 	process_users(users){
-
-		console.log("process")
+		
 		let online_user = this._LoginService.get_logged_in_user();
 
 		this.users = users.map((user) => {
