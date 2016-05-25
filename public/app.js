@@ -67,13 +67,13 @@ io.sockets.on("connect" , function(socket){
 		}else{
 			message = data.message;
 		}
-		
-		if(data.file && validate_image_file(data.file) == true ){
+		console.log(data.file);
+		if(data.file && validate_image_file(data.file) ){
 			
 			data.file = "data:" + data.fileType + ";base64," + new Buffer( data.file, 'binary' ).toString('base64');	
 			
 		}else{
-
+	
 			data.file = null;
 		}
 		
@@ -128,9 +128,13 @@ io.sockets.on("connect" , function(socket){
 
 });
 function validate_image_file(image){
+
 	var hex_accepted = ['ffd8ffe0' , "47494638" , "89504e47"]
+
+
 	var hex_string = image.slice(0, 4).toString('hex');
-			
+		
+
 	return (hex_accepted.indexOf(hex_string) != -1);
 }
 

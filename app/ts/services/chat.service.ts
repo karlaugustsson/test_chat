@@ -27,7 +27,7 @@ export class ChatService {
 	}
 
 	update_chat_box(message,image = null){
-
+		console.log(image);
 		let data = (image == null) ? { message: message } : { message: message, file: image , fileType:image.type };
 		this._socket.emit("send_message", data,(data) => {
 			this.message_data.next(data)

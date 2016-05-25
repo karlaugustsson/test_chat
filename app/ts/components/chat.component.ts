@@ -19,6 +19,7 @@ export class ChatComponent implements OnInit {
 	error_message: string = "";
 	whisper: boolean = false;
 	processed_image;
+	raw_image;
 	file_reader = new FileReader();
 	message_archive: Array<any> = [];
 	message_cursor = this.message_archive.length - 1;
@@ -58,6 +59,7 @@ export class ChatComponent implements OnInit {
 
 				)
 			} else {
+				console.log(this.processed_image);
 				this.add_to_chat_items(
 					this.OnlineUser,
 					this.message,
@@ -90,8 +92,8 @@ export class ChatComponent implements OnInit {
 		this.chat_box_items.push(object);
 	}
 	get_image(event) {
-
-		this.process_image(event.target.files[0])
+		this.raw_image = event.target.files[0];
+			this.process_image(event.target.files[0])
 			.then((image) => {
 				this.processed_image = image;
 
@@ -116,7 +118,7 @@ export class ChatComponent implements OnInit {
 	}
 	send_message() {
 		if (this._userService.get_user_count() > 0) {
-			this._chatservice.update_chat_box(this.message, this.processed_image || null);
+			this._chatservice.update_chat_box(this.message, this.raw_image || null);
 		}
 
 	}

@@ -52,6 +52,7 @@ var ChatComponent = (function () {
                 this.add_to_chat_items(this.OnlineUser, this.message.substring(this.message.indexOf(" ", 3) + 1, this.message.length), this.processed_image || null, this.whisper, this.message.substring(this.message.indexOf(" ") + 1, this.message.indexOf(" ", 3)));
             }
             else {
+                console.log(this.processed_image);
                 this.add_to_chat_items(this.OnlineUser, this.message, this.processed_image || null, this.whisper);
             }
             this.send_message();
@@ -81,6 +82,7 @@ var ChatComponent = (function () {
     };
     ChatComponent.prototype.get_image = function (event) {
         var _this = this;
+        this.raw_image = event.target.files[0];
         this.process_image(event.target.files[0])
             .then(function (image) {
             _this.processed_image = image;
@@ -99,7 +101,7 @@ var ChatComponent = (function () {
     };
     ChatComponent.prototype.send_message = function () {
         if (this._userService.get_user_count() > 0) {
-            this._chatservice.update_chat_box(this.message, this.processed_image || null);
+            this._chatservice.update_chat_box(this.message, this.raw_image || null);
         }
     };
     ChatComponent.prototype.check_them_keys = function (event) {

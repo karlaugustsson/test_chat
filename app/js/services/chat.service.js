@@ -28,6 +28,7 @@ var ChatService = (function () {
     ChatService.prototype.update_chat_box = function (message, image) {
         var _this = this;
         if (image === void 0) { image = null; }
+        console.log(image);
         var data = (image == null) ? { message: message } : { message: message, file: image, fileType: image.type };
         this._socket.emit("send_message", data, function (data) {
             _this.message_data.next(data);
